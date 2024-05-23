@@ -38,7 +38,6 @@ import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
-import { revalidatePath } from 'next/cache'; // นำเข้า revalidatePath
 var prisma = new PrismaClient();
 export var GET = function (request) { return __awaiter(void 0, void 0, void 0, function () {
     var searchParams, category, search, sort, page, limit, skip, whereCondition, _a, posts, totalPosts, totalPages, error_1;
@@ -154,8 +153,6 @@ export var POST = function (request) { return __awaiter(void 0, void 0, void 0, 
                     })];
             case 8:
                 newPost = _a.sent();
-                // Revalidate path หลังจากเพิ่มโพสต์ใหม่
-                revalidatePath('/path-to-revalidate');
                 return [2 /*return*/, NextResponse.json(newPost)];
             case 9:
                 error_2 = _a.sent();
@@ -191,10 +188,7 @@ export var PATCH = function (request) { return __awaiter(void 0, void 0, void 0,
             case 5:
                 _b.sent();
                 _b.label = 6;
-            case 6:
-                // Revalidate path หลังจากอัพเดทโพสต์
-                revalidatePath('/');
-                return [2 /*return*/, NextResponse.json({ msg: 'Update successful' })];
+            case 6: return [2 /*return*/, NextResponse.json({ msg: 'Update successful' })];
             case 7:
                 error_3 = _b.sent();
                 return [2 /*return*/, NextResponse.json({ error: error_3 }, { status: 500 })];

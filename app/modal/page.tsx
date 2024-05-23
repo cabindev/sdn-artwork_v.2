@@ -1,12 +1,19 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   FacebookShareButton,
   TwitterShareButton,
   FacebookIcon,
   TwitterIcon
 } from 'react-share';
+import Image from 'next/image';
 import Head from 'next/head';
+
+interface PageProps {
+  imageUrl: string;
+  title: string;
+}
 
 interface Category {
   id: number;
@@ -32,6 +39,7 @@ const PopupModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [copySuccess, setCopySuccess] = useState<string>('');
 
   const siteUrl = 'https://app-info.healthypublicspaces.com';
 
@@ -42,9 +50,8 @@ const PopupModal = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories');
-      const data = await response.json();
-      setCategories(data);
+      const response = await axios.get<Category[]>('/api/categories');
+      setCategories(response.data);
     } catch (error) {
       console.error('Failed to fetch categories', error);
     }
@@ -58,10 +65,9 @@ const PopupModal = () => {
         page: currentPage.toString(),
         limit: '10',
       }).toString();
-      const response = await fetch(`/api/posts?${query}`);
-      const data = await response.json();
-      setPosts(data.posts);
-      setTotalPages(data.totalPages);
+      const res = await axios.get(`/api/posts?${query}`);
+      setPosts(res.data.posts);
+      setTotalPages(res.data.totalPages);
     } catch (error) {
       console.error('Failed to fetch posts', error);
     }
@@ -70,13 +76,7 @@ const PopupModal = () => {
   const openModal = async (post: Post) => {
     setSelectedPost(post);
     setModalIsOpen(true);
-    await fetch('/api/posts', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: post.id, type: 'view' }),
-    });
+    await axios.patch('/api/posts', { id: post.id, type: 'view' });
   };
 
   const closeModal = () => {
@@ -109,29 +109,27 @@ const PopupModal = () => {
   };
 
   const handleDownload = async (zipUrl: string, postId: number) => {
-    await fetch('/api/posts', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: postId, type: 'download' }),
-    });
+    await axios.patch('/api/posts', { id: postId, type: 'download' });
     window.location.href = zipUrl;
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(`${siteUrl}/posts/${selectedPost?.id}`);
+      setCopySuccess('Link copied!');
+      setTimeout(() => {
+        setCopySuccess('');
+      }, 2000);
+    } catch (err) {
+      setCopySuccess('Failed to copy link');
+      setTimeout(() => {
+        setCopySuccess('');
+      }, 2000);
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {selectedPost && (
-        <Head>
-          <meta property="og:title" content={selectedPost.title} />
-          <meta property="og:description" content={selectedPost.title} />
-          <meta property="og:url" content={`${siteUrl}/post/${selectedPost.id}`} />
-          <meta property="og:image" content={selectedPost.imageUrl} />
-          <meta name="twitter:title" content={selectedPost.title} />
-          <meta name="twitter:description" content={selectedPost.title} />
-          <meta name="twitter:image" content={selectedPost.imageUrl} />
-        </Head>
-      )}
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
@@ -157,6 +155,7 @@ const PopupModal = () => {
           </button>
         ))}
       </div>
+
       <div className="masonry-grid">
         {posts.map((post) => (
           <div
@@ -164,8 +163,10 @@ const PopupModal = () => {
             className="masonry-item relative"
             onClick={() => openModal(post)}
           >
-            <img
+            <Image
               src={post.imageUrl}
+              width={500}
+              height={500}
               alt={post.title}
               className="object-cover w-full h-full rounded-md"
             />
@@ -194,70 +195,88 @@ const PopupModal = () => {
       </div>
 
       {modalIsOpen && selectedPost && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={closeModal}
-        >
-          <button
-            onClick={prevPost}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-            style={{ padding: '1rem' }}
-          >
-            &#8249;
-          </button>
+        <>
+          <Head>
+            <title>{selectedPost.title}</title>
+            <meta property="og:title" content={selectedPost.title} />
+            <meta property="og:description" content="Description of your post" />
+            <meta property="og:image" content={selectedPost.imageUrl} />
+            <meta property="og:url" content={`${siteUrl}/posts/${selectedPost.id}`} />
+            <meta property="og:type" content="article" />
+          </Head>
           <div
-            className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={closeModal}
           >
             <button
-              onClick={closeModal}
-              className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
+              onClick={prevPost}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
               style={{ padding: '1rem' }}
             >
-              &times;
+              &#8249;
             </button>
-            <div className="flex justify-between items-center mb-4 w-full">
-              <h2 className="text-2xl font-semibold text-center w-full">
-                {selectedPost.title}
-              </h2>
-            </div>
-            <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-              <img
-                src={selectedPost.imageUrl}
-                alt={selectedPost.title}
-                className="object-contain w-full h-full max-h-96"
-              />
-            </div>
-            <div className="text-right w-full flex justify-between items-center">
-              <span className="text-gray-700">Views: {selectedPost.views}</span>
-              <span className="text-gray-700">
-                Downloads: {selectedPost.downloads}
-              </span>
-              <a
-                href="#"
-                onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+            <div
+              className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={closeModal}
+                className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
+                style={{ padding: '1rem' }}
               >
-                Download free
-              </a>
+                &times;
+              </button>
+              <div className="flex justify-between items-center mb-4 w-full">
+                <h2 className="text-2xl font-semibold text-center w-full">
+                  {selectedPost.title}
+                </h2>
+              </div>
+              <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
+                <Image
+                  src={selectedPost.imageUrl}
+                  alt={selectedPost.title}
+                  width={500}
+                  height={500}
+                  className="object-contain w-full h-full max-h-96"
+                />
+              </div>
+              <div className="text-right w-full flex justify-between items-center">
+                <span className="text-gray-700">Views: {selectedPost.views}</span>
+                <span className="text-gray-700">
+                  Downloads: {selectedPost.downloads}
+                </span>
+                <a
+                  href="#"
+                  onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+                >
+                  Download free
+                </a>
+              </div>
+              <div className="flex space-x-2 mt-4">
+                <FacebookShareButton url={`${siteUrl}/posts/${selectedPost.id}`} title={selectedPost.title}>
+                  <FacebookIcon size={32} round />
+                </FacebookShareButton>
+               
+                <button onClick={handleCopy} className="px-4 py-2 bg-blue-600 text-white rounded-md">
+                  Copy Link
+                </button>
+              </div>
+              {copySuccess && (
+                <div className="mt-2 text-green-600">
+                  {copySuccess}
+                </div>
+              )}
             </div>
-            <div className="flex space-x-2 mt-4">
-              <FacebookShareButton url={`${siteUrl}/post/${selectedPost.id}`} title={selectedPost.title}>
-                <FacebookIcon size={32} round />
-              </FacebookShareButton>
-              <TwitterShareButton url={`${siteUrl}/post/${selectedPost.id}`} title={selectedPost.title}>
-                <TwitterIcon size={32} round />
-              </TwitterShareButton>
-            </div>
+            <button
+              onClick={nextPost}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
+              style={{ padding: '1rem' }}
+            >
+              &#8250;
+            </button>
           </div>
-          <button
-            onClick={nextPost}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-            style={{ padding: '1rem' }}
-          >
-            &#8250;
-          </button>
-        </div>
+        </>
       )}
     </div>
   );
