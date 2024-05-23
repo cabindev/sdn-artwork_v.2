@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['app-info.healthypublicspaces.com'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'app-info.healthypublicspaces.com',
+        port: '',
+        pathname: '/images/**'
       },
+    ],
+  },
 };
 
-export default nextConfig;
+

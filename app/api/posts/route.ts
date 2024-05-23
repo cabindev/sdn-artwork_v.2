@@ -3,7 +3,8 @@ import { readdir, unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
-import { revalidatePath } from 'next/cache'; // นำเข้า revalidatePath
+
+
 const prisma = new PrismaClient();
 
 export const GET = async (request: NextRequest) => {
@@ -104,8 +105,6 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
-    // Revalidate path หลังจากเพิ่มโพสต์ใหม่
-    revalidatePath('/path-to-revalidate');
 
     return NextResponse.json(newPost);
   } catch (error) {
@@ -129,8 +128,7 @@ export const PATCH = async (request: NextRequest) => {
       });
     }
 
-    // Revalidate path หลังจากอัพเดทโพสต์
-    revalidatePath('/');
+
 
     return NextResponse.json({ msg: 'Update successful' });
   } catch (error) {
