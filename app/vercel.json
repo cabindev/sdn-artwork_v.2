@@ -1,0 +1,32 @@
+{
+    "build": {
+      "env": {
+        "NEXT_PUBLIC_ENVIRONMENT": "production"
+      }
+    },
+    "functions": {
+      "api/*": {
+        "runtime": "nodejs14.x",
+        "handler": "index.handler",
+        "includeFiles": "node_modules/.prisma/client/**"
+      }
+    },
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node",
+        "config": {
+          "includeFiles": [
+            "node_modules/.prisma/client/**"
+          ]
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/api"
+      }
+    ]
+  }
+  
