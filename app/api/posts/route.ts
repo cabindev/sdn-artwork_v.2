@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
 
-
 const prisma = new PrismaClient();
 
 export const GET = async (request: NextRequest) => {
@@ -38,7 +37,7 @@ export const GET = async (request: NextRequest) => {
       prisma.post.findMany({
         where: whereCondition,
         include: {
-          category: true, // Include category data in the response
+          category: true,
         },
         orderBy: {
           createdAt: sort as 'asc' | 'desc',
@@ -105,7 +104,6 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
-
     return NextResponse.json(newPost);
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
@@ -127,8 +125,6 @@ export const PATCH = async (request: NextRequest) => {
         data: { downloads: { increment: 1 } },
       });
     }
-
-
 
     return NextResponse.json({ msg: 'Update successful' });
   } catch (error) {
