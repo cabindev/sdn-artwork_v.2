@@ -145,7 +145,7 @@ const PopupModal = () => {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-2 py-1 text-sm rounded-md ${
               selectedCategory === category.name
                 ? "bg-indigo-600 text-white"
                 : "bg-gray-200"
@@ -259,11 +259,12 @@ const PopupModal = () => {
                   onClick={() =>
                     handleDownload(selectedPost.zipUrl, selectedPost.id)
                   }
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+                  className="px-2 py-1 text-sm bg-green-500 text-white rounded-md"
                 >
                   Download free
                 </a>
               </div>
+
               <div className="flex space-x-2 mt-4">
                 <FacebookShareButton
                   url={`${siteUrl}/posts/${selectedPost.id}`}
@@ -274,7 +275,7 @@ const PopupModal = () => {
 
                 <button
                   onClick={handleCopy}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  className="px-2 py-1 text-sm bg-green-500 text-white rounded-md"
                 >
                   Copy Link
                 </button>

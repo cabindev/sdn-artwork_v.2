@@ -22,7 +22,7 @@ interface Post {
   category: Category;
 }
 
-const PostDetail = ({ params }: { params: { id: string } }) => {
+const ProductDetail = ({ params }: { params: { id: string } }) => {
   const [post, setPost] = useState<Post | null>(null);
   const { id } = params;
   const siteUrl = 'https://app-info.healthypublicspaces.com';
@@ -80,4 +80,4 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default PostDetail;
+export default ProductDetail;
