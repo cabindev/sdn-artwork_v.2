@@ -39,6 +39,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import Head from 'next/head';
 var Product = function () {
     var _a = useState([]), posts = _a[0], setPosts = _a[1];
     var _b = useState([]), categories = _b[0], setCategories = _b[1];
@@ -124,11 +125,23 @@ var Product = function () {
     if (loading) {
         return <div>Loading...</div>;
     }
-    return (<div className="max-w-7xl mx-auto px-4 py-8">
+    var firstPost = posts[0] || null;
+    return (<div>
+      {firstPost && (<Head>
+          <title>{firstPost.title}</title>
+          <meta name="description" content={firstPost.title}/>
+          <meta property="og:title" content={firstPost.title}/>
+          <meta property="og:description" content={firstPost.title}/>
+          <meta property="og:image" content={"".concat(siteUrl).concat(firstPost.imageUrl)}/>
+          <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(firstPost.id)}/>
+          <meta property="og:type" content="article"/>
+        </Head>)}
+        
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <input type="text" placeholder="Search images..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
       </div>
-
+     
       <div className="flex space-x-4 overflow-x-auto mb-6">
         {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-4 py-2 rounded-md ".concat(selectedCategory === category.name
                 ? 'bg-indigo-600 text-white'
@@ -145,7 +158,6 @@ var Product = function () {
             </button>
           </div>); })}
       </div>
-
       <div className="flex justify-center mt-8">
         <button onClick={function () { return handlePageChange(currentPage - 1); }} disabled={currentPage === 1} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
           Previous
@@ -157,6 +169,7 @@ var Product = function () {
           Next
         </button>
       </div>
+    </div>
     </div>);
 };
 export default Product;
