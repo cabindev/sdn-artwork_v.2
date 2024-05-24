@@ -181,8 +181,8 @@ var PopupModal = function () {
 
       <div className="flex space-x-4 overflow-x-auto mb-6">
         {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-4 py-2 rounded-md ".concat(selectedCategory === category.name
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-200')}>
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200")}>
             {category.name}
           </button>); })}
       </div>
@@ -214,12 +214,13 @@ var PopupModal = function () {
             <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(selectedPost.id)}/>
             <meta property="og:type" content="article"/>
           </Head>
+
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
-            <button onClick={prevPost} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: '1rem' }}>
+            <button onClick={prevPost} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: "1rem" }}>
               &#8249;
             </button>
             <div className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center" onClick={function (e) { return e.stopPropagation(); }}>
-              <button onClick={closeModal} className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl" style={{ padding: '1rem' }}>
+              <button onClick={closeModal} className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl" style={{ padding: "1rem" }}>
                 &times;
               </button>
               <div className="flex justify-between items-center mb-4 w-full">
@@ -231,11 +232,15 @@ var PopupModal = function () {
                 <Image src={selectedPost.imageUrl} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
               </div>
               <div className="text-right w-full flex justify-between items-center">
-                <span className="text-gray-700">Views: {selectedPost.views}</span>
+                <span className="text-gray-700">
+                  Views: {selectedPost.views}
+                </span>
                 <span className="text-gray-700">
                   Downloads: {selectedPost.downloads}
                 </span>
-                <a href="#" onClick={function () { return handleDownload(selectedPost.zipUrl, selectedPost.id); }} className="px-4 py-2 bg-indigo-600 text-white rounded-md">
+                <a href="#" onClick={function () {
+                return handleDownload(selectedPost.zipUrl, selectedPost.id);
+            }} className="px-4 py-2 bg-indigo-600 text-white rounded-md">
                   Download free
                 </a>
               </div>
@@ -243,16 +248,14 @@ var PopupModal = function () {
                 <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(selectedPost.id)} title={selectedPost.title}>
                   <FacebookIcon size={32} round/>
                 </FacebookShareButton>
-               
+
                 <button onClick={handleCopy} className="px-4 py-2 bg-blue-600 text-white rounded-md">
                   Copy Link
                 </button>
               </div>
-              {copySuccess && (<div className="mt-2 text-green-600">
-                  {copySuccess}
-                </div>)}
+              {copySuccess && (<div className="mt-2 text-green-600">{copySuccess}</div>)}
             </div>
-            <button onClick={nextPost} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: '1rem' }}>
+            <button onClick={nextPost} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: "1rem" }}>
               &#8250;
             </button>
           </div>

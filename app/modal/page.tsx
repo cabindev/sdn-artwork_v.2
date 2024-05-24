@@ -147,8 +147,8 @@ const PopupModal = () => {
             onClick={() => setSelectedCategory(category.name)}
             className={`px-4 py-2 rounded-md ${
               selectedCategory === category.name
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-200'
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200"
             }`}
           >
             {category.name}
@@ -199,11 +199,18 @@ const PopupModal = () => {
           <Head>
             <title>{selectedPost.title}</title>
             <meta property="og:title" content={selectedPost.title} />
-            <meta property="og:description" content="Description of your post" />
+            <meta
+              property="og:description"
+              content="Description of your post"
+            />
             <meta property="og:image" content={selectedPost.imageUrl} />
-            <meta property="og:url" content={`${siteUrl}/posts/${selectedPost.id}`} />
+            <meta
+              property="og:url"
+              content={`${siteUrl}/posts/${selectedPost.id}`}
+            />
             <meta property="og:type" content="article" />
           </Head>
+
           <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             onClick={closeModal}
@@ -211,7 +218,7 @@ const PopupModal = () => {
             <button
               onClick={prevPost}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: '1rem' }}
+              style={{ padding: "1rem" }}
             >
               &#8249;
             </button>
@@ -222,7 +229,7 @@ const PopupModal = () => {
               <button
                 onClick={closeModal}
                 className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
-                style={{ padding: '1rem' }}
+                style={{ padding: "1rem" }}
               >
                 &times;
               </button>
@@ -241,37 +248,45 @@ const PopupModal = () => {
                 />
               </div>
               <div className="text-right w-full flex justify-between items-center">
-                <span className="text-gray-700">Views: {selectedPost.views}</span>
+                <span className="text-gray-700">
+                  Views: {selectedPost.views}
+                </span>
                 <span className="text-gray-700">
                   Downloads: {selectedPost.downloads}
                 </span>
                 <a
                   href="#"
-                  onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
+                  onClick={() =>
+                    handleDownload(selectedPost.zipUrl, selectedPost.id)
+                  }
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md"
                 >
                   Download free
                 </a>
               </div>
               <div className="flex space-x-2 mt-4">
-                <FacebookShareButton url={`${siteUrl}/posts/${selectedPost.id}`} title={selectedPost.title}>
+                <FacebookShareButton
+                  url={`${siteUrl}/posts/${selectedPost.id}`}
+                  title={selectedPost.title}
+                >
                   <FacebookIcon size={32} round />
                 </FacebookShareButton>
-               
-                <button onClick={handleCopy} className="px-4 py-2 bg-blue-600 text-white rounded-md">
+
+                <button
+                  onClick={handleCopy}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                >
                   Copy Link
                 </button>
               </div>
               {copySuccess && (
-                <div className="mt-2 text-green-600">
-                  {copySuccess}
-                </div>
+                <div className="mt-2 text-green-600">{copySuccess}</div>
               )}
             </div>
             <button
               onClick={nextPost}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: '1rem' }}
+              style={{ padding: "1rem" }}
             >
               &#8250;
             </button>
