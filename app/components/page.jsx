@@ -1,4 +1,3 @@
-//components/page.tsx
 'use client';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -40,14 +39,17 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Head from 'next/head';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
 var Product = function () {
-    var _a = useState([]), posts = _a[0], setPosts = _a[1];
-    var _b = useState([]), categories = _b[0], setCategories = _b[1];
-    var _c = useState(''), search = _c[0], setSearch = _c[1];
-    var _d = useState(''), selectedCategory = _d[0], setSelectedCategory = _d[1];
-    var _e = useState(1), currentPage = _e[0], setCurrentPage = _e[1];
-    var _f = useState(1), totalPages = _f[0], setTotalPages = _f[1];
-    var _g = useState(true), loading = _g[0], setLoading = _g[1];
+    var _a, _b, _c, _d, _e;
+    var _f = useState([]), posts = _f[0], setPosts = _f[1];
+    var _g = useState([]), categories = _g[0], setCategories = _g[1];
+    var _h = useState(''), search = _h[0], setSearch = _h[1];
+    var _j = useState(''), selectedCategory = _j[0], setSelectedCategory = _j[1];
+    var _k = useState(1), currentPage = _k[0], setCurrentPage = _k[1];
+    var _l = useState(1), totalPages = _l[0], setTotalPages = _l[1];
+    var _m = useState(true), loading = _m[0], setLoading = _m[1];
+    var _o = useState(null), selectedPost = _o[0], setSelectedPost = _o[1];
     var siteUrl = 'https://app-info.healthypublicspaces.com';
     useEffect(function () {
         var fetchData = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -122,54 +124,78 @@ var Product = function () {
         var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=".concat(siteUrl, "/posts/").concat(post.id);
         window.open(shareUrl, '_blank');
     };
+    var handleDownload = function (zipUrl, postId) {
+        window.open(zipUrl, '_blank');
+    };
+    var handlePostClick = function (post) {
+        setSelectedPost(post);
+    };
+    useEffect(function () {
+        var _a, _b, _c, _d, _e;
+        if (selectedPost) {
+            document.title = selectedPost.title;
+            (_a = document
+                .querySelector('meta[name="description"]')) === null || _a === void 0 ? void 0 : _a.setAttribute('content', selectedPost.title);
+            (_b = document
+                .querySelector('meta[property="og:title"]')) === null || _b === void 0 ? void 0 : _b.setAttribute('content', selectedPost.title);
+            (_c = document
+                .querySelector('meta[property="og:description"]')) === null || _c === void 0 ? void 0 : _c.setAttribute('content', selectedPost.title);
+            (_d = document
+                .querySelector('meta[property="og:image"]')) === null || _d === void 0 ? void 0 : _d.setAttribute('content', "".concat(siteUrl).concat(selectedPost.imageUrl));
+            (_e = document
+                .querySelector('meta[property="og:url"]')) === null || _e === void 0 ? void 0 : _e.setAttribute('content', "".concat(siteUrl, "/posts/").concat(selectedPost.id));
+        }
+    }, [selectedPost]);
     if (loading) {
         return <div>Loading...</div>;
     }
-    var firstPost = posts[0] || null;
     return (<div>
-      {firstPost && (<Head>
-          <title>{firstPost.title}</title>
-          <meta name="description" content={firstPost.title}/>
-          <meta property="og:title" content={firstPost.title}/>
-          <meta property="og:description" content={firstPost.title}/>
-          <meta property="og:image" content={"".concat(siteUrl).concat(firstPost.imageUrl)}/>
-          <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(firstPost.id)}/>
-          <meta property="og:type" content="article"/>
-        </Head>)}
-        
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <input type="text" placeholder="Search images..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-      </div>
-     
-      <div className="flex space-x-4 overflow-x-auto mb-6">
-        {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-4 py-2 rounded-md ".concat(selectedCategory === category.name
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-200')}>
-            {category.name}
-          </button>); })}
-      </div>
+      <Head>
+        <meta name="description" content={(_a = posts[0]) === null || _a === void 0 ? void 0 : _a.title}/>
+        <meta property="og:title" content={(_b = posts[0]) === null || _b === void 0 ? void 0 : _b.title}/>
+        <meta property="og:description" content={(_c = posts[0]) === null || _c === void 0 ? void 0 : _c.title}/>
+        <meta property="og:image" content={"".concat(siteUrl).concat((_d = posts[0]) === null || _d === void 0 ? void 0 : _d.imageUrl)}/>
+        <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat((_e = posts[0]) === null || _e === void 0 ? void 0 : _e.id)}/>
+        <meta property="og:type" content="article"/>
+      </Head>
 
-      <div className="masonry-grid">
-        {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative">
-            <Image src={"".concat(siteUrl).concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md"/>
-            <button onClick={function () { return handleShare(post); }} className="absolute top-2 right-2 bg-blue-600 text-white rounded-full p-2">
-              Share
-            </button>
-          </div>); })}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-6">
+          <input type="text" placeholder="Search images..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
+        </div>
+
+        <div className="flex space-x-4 overflow-x-auto mb-6">
+          {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-2 py-1 text-sm rounded-md ".concat(selectedCategory === category.name
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200")}>
+              {category.name}
+            </button>); })}
+        </div>
+
+        <div className="masonry-grid">
+          {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative" onClick={function () { return handlePostClick(post); }}>
+              <Image src={"".concat(siteUrl).concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md"/>
+              <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title} hashtag="#สุขภาพดี" className="absolute top-2 right-2">
+                <FacebookIcon size={32} round/>
+              </FacebookShareButton>
+              <button onClick={function () { return handleDownload(post.zipUrl, post.id); }} className="absolute bottom-2 right-2 bg-green-500 text-white rounded-md px-2 py-1 text-sm">
+                ดาวน์โหลดฟรี
+              </button>
+            </div>); })}
+        </div>
+
+        <div className="flex justify-center mt-8">
+          <button onClick={function () { return handlePageChange(currentPage - 1); }} disabled={currentPage === 1} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
+            Previous
+          </button>
+          <span className="px-4 py-2">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button onClick={function () { return handlePageChange(currentPage + 1); }} disabled={currentPage === totalPages} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
+            Next
+          </button>
+        </div>
       </div>
-      <div className="flex justify-center mt-8">
-        <button onClick={function () { return handlePageChange(currentPage - 1); }} disabled={currentPage === 1} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
-          Previous
-        </button>
-        <span className="px-4 py-2">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button onClick={function () { return handlePageChange(currentPage + 1); }} disabled={currentPage === totalPages} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
-          Next
-        </button>
-      </div>
-    </div>
     </div>);
 };
 export default Product;
