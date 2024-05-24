@@ -120,6 +120,7 @@ const Create = () => {
             id="image"
             onChange={(e) => setImage(e.target.files?.[0] || null)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            required
           />
         </div>
         <div>
@@ -135,6 +136,7 @@ const Create = () => {
             id="zip"
             onChange={(e) => setZipFile(e.target.files?.[0] || null)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            required
           />
         </div>
         <div>
