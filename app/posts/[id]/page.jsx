@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Head from 'next/head';
-import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from 'next-share';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
 var PostDetail = function (_a) {
     var _b;
     var params = _a.params;
@@ -77,29 +77,27 @@ var PostDetail = function (_a) {
         <title>{post.title}</title>
         <meta property="og:title" content={post.title}/>
         <meta property="og:description" content={"Check out this post about ".concat(post.title)}/>
-        <meta property="og:image" content={post.imageUrl}/>
+        <meta property="og:image" content={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)}/>
         <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(post.id)}/>
         <meta property="og:type" content="article"/>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="twitter:title" content={post.title}/>
         <meta name="twitter:description" content={"Check out this post about ".concat(post.title)}/>
-        <meta name="twitter:image" content={post.imageUrl}/>
+        <meta name="twitter:image" content={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)}/>
       </Head>
       <h1 className="text-2xl font-semibold mb-6">{post.title}</h1>
       <div className="mb-4">
-        {post.imageUrl && (<img src={post.imageUrl} alt="Post Image" className="w-full h-auto rounded-md"/>)}
+        {post.imageUrl && (<img src={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)} alt="Post Image" className="w-full h-auto rounded-md"/>)}
       </div>
       <div className="mb-4">
         <span className="block text-sm font-medium text-gray-700">Category:</span>
         <span className="block text-lg">{((_b = post.category) === null || _b === void 0 ? void 0 : _b.name) || 'No Category'}</span>
       </div>
       <div className="flex space-x-2 mt-4">
-        <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} quote={post.title}>
+        <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title}>
           <FacebookIcon size={32} round/>
         </FacebookShareButton>
-        <TwitterShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title}>
-          <TwitterIcon size={32} round/>
-        </TwitterShareButton>
+        
       </div>
     </div>);
 };

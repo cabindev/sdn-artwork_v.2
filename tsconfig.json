@@ -4,7 +4,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,  // เปลี่ยนค่าเป็น false เพื่อให้เกิดการคอมไพล์
+    "noEmit": false,  // เปลี่ยนค่าเป็น false เพื่อให้เกิดการคอมไพล์
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
