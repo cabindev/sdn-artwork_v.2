@@ -106,7 +106,7 @@ const Product = () => {
         {posts.map((post) => (
           <div key={post.id} className="masonry-item relative">
             <Image
-              src={post.imageUrl}
+              src={`${siteUrl}${post.imageUrl}`}
               width={500}
               height={500}
               alt={post.title}

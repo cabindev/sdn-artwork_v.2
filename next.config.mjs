@@ -6,10 +6,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'app-info.healthypublicspaces.com',
         port: '',
-        pathname: '/images/**'
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'sdn-workspaces.vercel.app',
+        port: '',
+        pathname: '/images/**',
       },
     ],
   },
 };
 
-
+export default nextConfig;
