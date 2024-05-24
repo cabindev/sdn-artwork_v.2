@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
+import Head from 'next/head';
 
 interface Category {
   id: number;
@@ -18,6 +19,7 @@ interface Post {
   views: number;
   downloads: number;
 }
+
 
 const Product = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -79,8 +81,22 @@ const Product = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  const firstPost = posts[0] || null;
 
   return (
+    <div>
+      {firstPost && (
+        <Head>
+          <title>{firstPost.title}</title>
+          <meta name="description" content={firstPost.title} />
+          <meta property="og:title" content={firstPost.title} />
+          <meta property="og:description" content={firstPost.title} />
+          <meta property="og:image" content={`${siteUrl}${firstPost.imageUrl}`} />
+          <meta property="og:url" content={`${siteUrl}/posts/${firstPost.id}`} />
+          <meta property="og:type" content="article" />
+        </Head>
+      )}
+        
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <input
@@ -91,7 +107,7 @@ const Product = () => {
           className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
-
+     
       <div className="flex space-x-4 overflow-x-auto mb-6">
         {categories.map((category) => (
           <button
@@ -127,7 +143,6 @@ const Product = () => {
           </div>
         ))}
       </div>
-
       <div className="flex justify-center mt-8">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -147,6 +162,7 @@ const Product = () => {
           Next
         </button>
       </div>
+    </div>
     </div>
   );
 };
