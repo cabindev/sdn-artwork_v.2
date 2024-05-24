@@ -70,6 +70,11 @@ const Product = () => {
     }
   };
 
+  const handleShare = (post: Post) => {
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${siteUrl}/posts/${post.id}`;
+    window.open(shareUrl, '_blank');
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -112,6 +117,12 @@ const Product = () => {
               alt={post.title}
               className="object-cover w-full h-full rounded-md"
             />
+            <button
+              onClick={() => handleShare(post)}
+              className="absolute top-2 right-2 bg-blue-600 text-white rounded-full p-2"
+            >
+              Share
+            </button>
           </div>
         ))}
       </div>
