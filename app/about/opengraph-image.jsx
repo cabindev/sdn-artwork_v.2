@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,47 +45,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+// app/about/opengraph-image.tsx
+import { ImageResponse } from 'next/og';
+export var runtime = 'edge';
+export var alt = 'About Acme';
+export var size = {
+    width: 1200,
+    height: 630,
 };
-export function generateMetadata(_a, parent_1) {
-    return __awaiter(this, arguments, void 0, function (_b, parent) {
-        var id, post, previousImages;
-        var _c;
-        var params = _b.params, searchParams = _b.searchParams;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+export var contentType = 'image/png';
+export default function Image() {
+    return __awaiter(this, void 0, void 0, function () {
+        var interSemiBold, _a, _b, _c;
+        var _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
                 case 0:
-                    id = params.id;
-                    return [4 /*yield*/, fetch("https://app-info.healthypublicspaces.com/api/posts/".concat(id)).then(function (res) { return res.json(); })];
-                case 1:
-                    post = _d.sent();
-                    return [4 /*yield*/, parent];
-                case 2:
-                    previousImages = ((_c = (_d.sent()).openGraph) === null || _c === void 0 ? void 0 : _c.images) || [];
-                    return [2 /*return*/, {
-                            title: post.title,
-                            description: "Check out this post about ".concat(post.title),
-                            openGraph: {
-                                title: post.title,
-                                description: "Check out this post about ".concat(post.title),
-                                images: __spreadArray([post.imageUrl], previousImages, true),
-                                url: "https://app-info.healthypublicspaces.com/posts/".concat(post.id),
-                                type: 'article',
-                            },
-                            twitter: {
-                                card: 'summary_large_image',
-                                title: post.title,
-                                description: "Check out this post about ".concat(post.title),
-                                images: post.imageUrl, // Note: Change `images` to `image` for Twitter metadata
-                            }
-                        }];
+                    interSemiBold = fetch(new URL('/fonts/Inter-SemiBold.ttf', import.meta.url)).then(function (res) { return res.arrayBuffer(); });
+                    _a = ImageResponse.bind;
+                    _b = [void 0, (<div style={{
+                                fontSize: 128,
+                                background: 'white',
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+        About Acme
+      </div>)];
+                    _c = [__assign({}, size)];
+                    _d = {};
+                    _e = {
+                        name: 'Inter'
+                    };
+                    return [4 /*yield*/, interSemiBold];
+                case 1: return [2 /*return*/, new (_a.apply(ImageResponse, _b.concat([__assign.apply(void 0, _c.concat([(_d.fonts = [
+                                (_e.data = _f.sent(),
+                                    _e.style = 'normal',
+                                    _e.weight = 400,
+                                    _e)
+                            ], _d)]))])))()];
             }
         });
     });

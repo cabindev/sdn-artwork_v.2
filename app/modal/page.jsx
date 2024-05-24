@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from 'react-share';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
 import Image from 'next/image';
 import Head from 'next/head';
 var PopupModal = function () {
@@ -243,9 +243,7 @@ var PopupModal = function () {
                 <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(selectedPost.id)} title={selectedPost.title}>
                   <FacebookIcon size={32} round/>
                 </FacebookShareButton>
-                <TwitterShareButton url={"".concat(siteUrl, "/post/").concat(selectedPost.id)} title={selectedPost.title}>
-                  <TwitterIcon size={32} round/>
-                </TwitterShareButton>
+               
                 <button onClick={handleCopy} className="px-4 py-2 bg-blue-600 text-white rounded-md">
                   Copy Link
                 </button>
