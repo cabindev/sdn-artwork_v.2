@@ -41,15 +41,14 @@ import Image from 'next/image';
 import Head from 'next/head';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 var Product = function () {
-    var _a, _b, _c, _d, _e;
-    var _f = useState([]), posts = _f[0], setPosts = _f[1];
-    var _g = useState([]), categories = _g[0], setCategories = _g[1];
-    var _h = useState(''), search = _h[0], setSearch = _h[1];
-    var _j = useState(''), selectedCategory = _j[0], setSelectedCategory = _j[1];
-    var _k = useState(1), currentPage = _k[0], setCurrentPage = _k[1];
-    var _l = useState(1), totalPages = _l[0], setTotalPages = _l[1];
-    var _m = useState(true), loading = _m[0], setLoading = _m[1];
-    var _o = useState(null), selectedPost = _o[0], setSelectedPost = _o[1];
+    var _a = useState([]), posts = _a[0], setPosts = _a[1];
+    var _b = useState([]), categories = _b[0], setCategories = _b[1];
+    var _c = useState(''), search = _c[0], setSearch = _c[1];
+    var _d = useState(''), selectedCategory = _d[0], setSelectedCategory = _d[1];
+    var _e = useState(1), currentPage = _e[0], setCurrentPage = _e[1];
+    var _f = useState(1), totalPages = _f[0], setTotalPages = _f[1];
+    var _g = useState(true), loading = _g[0], setLoading = _g[1];
+    var _h = useState(null), selectedPost = _h[0], setSelectedPost = _h[1];
     var siteUrl = 'https://app-info.healthypublicspaces.com';
     useEffect(function () {
         var fetchData = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -131,19 +130,32 @@ var Product = function () {
         setSelectedPost(post);
     };
     useEffect(function () {
-        var _a, _b, _c, _d, _e;
+        var _a;
         if (selectedPost) {
+            var metaTitle = document.querySelector('meta[property="og:title"]');
+            var metaDescription = document.querySelector('meta[property="og:description"]');
+            var metaImage = document.querySelector('meta[property="og:image"]');
+            var metaUrl = document.querySelector('meta[property="og:url"]');
+            var twitterTitle = document.querySelector('meta[name="twitter:title"]');
+            var twitterDescription = document.querySelector('meta[name="twitter:description"]');
+            var twitterImage = document.querySelector('meta[name="twitter:image"]');
             document.title = selectedPost.title;
             (_a = document
                 .querySelector('meta[name="description"]')) === null || _a === void 0 ? void 0 : _a.setAttribute('content', selectedPost.title);
-            (_b = document
-                .querySelector('meta[property="og:title"]')) === null || _b === void 0 ? void 0 : _b.setAttribute('content', selectedPost.title);
-            (_c = document
-                .querySelector('meta[property="og:description"]')) === null || _c === void 0 ? void 0 : _c.setAttribute('content', selectedPost.title);
-            (_d = document
-                .querySelector('meta[property="og:image"]')) === null || _d === void 0 ? void 0 : _d.setAttribute('content', "".concat(siteUrl).concat(selectedPost.imageUrl));
-            (_e = document
-                .querySelector('meta[property="og:url"]')) === null || _e === void 0 ? void 0 : _e.setAttribute('content', "".concat(siteUrl, "/posts/").concat(selectedPost.id));
+            if (metaTitle)
+                metaTitle.setAttribute('content', selectedPost.title);
+            if (metaDescription)
+                metaDescription.setAttribute('content', selectedPost.title);
+            if (metaImage)
+                metaImage.setAttribute('content', "".concat(siteUrl).concat(selectedPost.imageUrl));
+            if (metaUrl)
+                metaUrl.setAttribute('content', "".concat(siteUrl, "/posts/").concat(selectedPost.id));
+            if (twitterTitle)
+                twitterTitle.setAttribute('content', selectedPost.title);
+            if (twitterDescription)
+                twitterDescription.setAttribute('content', selectedPost.title);
+            if (twitterImage)
+                twitterImage.setAttribute('content', "".concat(siteUrl).concat(selectedPost.imageUrl));
         }
     }, [selectedPost]);
     if (loading) {
@@ -151,14 +163,21 @@ var Product = function () {
     }
     return (<div>
       <Head>
-        <meta name="description" content={(_a = posts[0]) === null || _a === void 0 ? void 0 : _a.title}/>
-        <meta property="og:title" content={(_b = posts[0]) === null || _b === void 0 ? void 0 : _b.title}/>
-        <meta property="og:description" content={(_c = posts[0]) === null || _c === void 0 ? void 0 : _c.title}/>
-        <meta property="og:image" content={"".concat(siteUrl).concat((_d = posts[0]) === null || _d === void 0 ? void 0 : _d.imageUrl)}/>
-        <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat((_e = posts[0]) === null || _e === void 0 ? void 0 : _e.id)}/>
-        <meta property="og:type" content="article"/>
+        <title>{selectedPost ? selectedPost.title : "Create Next App Yellow"}</title>
+        <meta name="description" content={selectedPost ? selectedPost.title : "Generated by create next app"}/>
+        <meta property="og:title" content={selectedPost ? selectedPost.title : "Create Next App Yellow"}/>
+        <meta property="og:description" content={selectedPost ? selectedPost.title : "Generated by create next app"}/>
+        <meta property="og:image" content={selectedPost ? "".concat(siteUrl).concat(selectedPost.imageUrl) : "https://app-info.healthypublicspaces.com/default-image.jpg"}/>
+        <meta property="og:url" content={selectedPost ? "".concat(siteUrl, "/posts/").concat(selectedPost.id) : "https://app-info.healthypublicspaces.com"}/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content="Create Next App Yellow"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:site" content="@yellowdev"/>
+        <meta name="twitter:title" content={selectedPost ? selectedPost.title : "Create Next App Yellow"}/>
+        <meta name="twitter:description" content={selectedPost ? selectedPost.title : "Generated by create next app"}/>
+        <meta name="twitter:image" content={selectedPost ? "".concat(siteUrl).concat(selectedPost.imageUrl) : "https://app-info.healthypublicspaces.com/default-image.jpg"}/>
+        <meta name="twitter:creator" content="@yellowdev"/>
       </Head>
-
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <input type="text" placeholder="Search images..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
