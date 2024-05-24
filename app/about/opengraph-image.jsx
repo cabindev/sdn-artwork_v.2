@@ -60,8 +60,9 @@ export default function Image() {
         var _d, _e;
         return __generator(this, function (_f) {
             switch (_f.label) {
-                case 0:
-                    interSemiBold = fetch(new URL('/fonts/Inter-SemiBold.ttf', import.meta.url)).then(function (res) { return res.arrayBuffer(); });
+                case 0: return [4 /*yield*/, fetch(new URL('/fonts/inter-semi-bold.ttf', process.env.NEXT_PUBLIC_BASE_URL).href).then(function (res) { return res.arrayBuffer(); })];
+                case 1:
+                    interSemiBold = _f.sent();
                     _a = ImageResponse.bind;
                     _b = [void 0, (<div style={{
                                 fontSize: 128,
@@ -80,7 +81,7 @@ export default function Image() {
                         name: 'Inter'
                     };
                     return [4 /*yield*/, interSemiBold];
-                case 1: return [2 /*return*/, new (_a.apply(ImageResponse, _b.concat([__assign.apply(void 0, _c.concat([(_d.fonts = [
+                case 2: return [2 /*return*/, new (_a.apply(ImageResponse, _b.concat([__assign.apply(void 0, _c.concat([(_d.fonts = [
                                 (_e.data = _f.sent(),
                                     _e.style = 'normal',
                                     _e.weight = 400,
