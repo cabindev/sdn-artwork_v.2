@@ -25,7 +25,7 @@ interface Post {
 const PostDetail = ({ params }: { params: { id: string } }) => {
   const [post, setPost] = useState<Post | null>(null);
   const { id } = params;
-  const siteUrl = 'https://app-info.healthypublicspaces.com';
+  const siteUrl = 'https://healthypublicspaces.com/';
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -52,18 +52,18 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
         <title>{post.title}</title>
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={`Check out this post about ${post.title}`} />
-        <meta property="og:image" content={`https://app-info.healthypublicspaces.com${post.imageUrl}`} />
+        <meta property="og:image" content={`https://healthypublicspaces.com/${post.imageUrl}`} />
         <meta property="og:url" content={`${siteUrl}/posts/${post.id}`} />
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={`Check out this post about ${post.title}`} />
-        <meta name="twitter:image" content={`https://app-info.healthypublicspaces.com${post.imageUrl}`} />
+        <meta name="twitter:image" content={`https://healthypublicspaces.com/${post.imageUrl}`} />
       </Head>
       <h1 className="text-2xl font-semibold mb-6">{post.title}</h1>
       <div className="mb-4">
         {post.imageUrl && (
-          <img src={`https://app-info.healthypublicspaces.com${post.imageUrl}`} alt="Post Image" className="w-full h-auto rounded-md" />
+          <img src={`https://healthypublicspaces.com/${post.imageUrl}`} alt="Post Image" className="w-full h-auto rounded-md" />
         )}
       </div>
       <div className="mb-4">

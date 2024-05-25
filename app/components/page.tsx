@@ -29,7 +29,7 @@ const Product = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const siteUrl = 'https://app-info.healthypublicspaces.com';
+  const siteUrl = 'https://healthypublicspaces.com/';
 
   useEffect(() => {
     const fetchData = async () => {
