@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Head from 'next/head';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
-import type { Metadata } from "next";
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 interface Category {
   id: number;
@@ -179,6 +178,14 @@ const Product = () => {
               >
                 <FacebookIcon size={32} round />
               </FacebookShareButton>
+              <TwitterShareButton
+                url={`${siteUrl}/posts/${post.id}`}
+                title={post.title}
+                hashtags={['สุขภาพดี']}
+                className="absolute top-2 right-10"
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
               <button
                 onClick={() => handleDownload(post.zipUrl, post.id)}
                 className="absolute bottom-2 right-2 bg-green-500 text-white rounded-md px-2 py-1 text-sm"

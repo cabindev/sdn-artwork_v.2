@@ -39,7 +39,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Head from 'next/head';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 var Product = function () {
     var _a = useState([]), posts = _a[0], setPosts = _a[1];
     var _b = useState([]), categories = _b[0], setCategories = _b[1];
@@ -197,6 +197,9 @@ var Product = function () {
               <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title} hashtag="#สุขภาพดี" className="absolute top-2 right-2">
                 <FacebookIcon size={32} round/>
               </FacebookShareButton>
+              <TwitterShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title} hashtags={['สุขภาพดี']} className="absolute top-2 right-10">
+                <TwitterIcon size={32} round/>
+              </TwitterShareButton>
               <button onClick={function () { return handleDownload(post.zipUrl, post.id); }} className="absolute bottom-2 right-2 bg-green-500 text-white rounded-md px-2 py-1 text-sm">
                 ดาวน์โหลดฟรี
               </button>
