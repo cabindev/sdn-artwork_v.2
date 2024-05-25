@@ -41,7 +41,7 @@ const PopupModal = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [copySuccess, setCopySuccess] = useState<string>('');
 
-  const siteUrl = 'https://app-info.healthypublicspaces.com';
+  const siteUrl = 'https://app-info.healthypublicspaces.com/';
 
   useEffect(() => {
     fetchCategories();
