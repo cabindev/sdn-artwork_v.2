@@ -50,7 +50,7 @@ var PopupModal = function () {
     var _g = useState(1), currentPage = _g[0], setCurrentPage = _g[1];
     var _h = useState(1), totalPages = _h[0], setTotalPages = _h[1];
     var _j = useState(''), copySuccess = _j[0], setCopySuccess = _j[1];
-    var siteUrl = 'https://app-info.healthypublicspaces.com';
+    var siteUrl = 'https://sdn-workspaces.sdnthailand.com/';
     useEffect(function () {
         fetchCategories();
         fetchPosts();
