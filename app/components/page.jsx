@@ -49,7 +49,7 @@ var Product = function () {
     var _f = useState(1), totalPages = _f[0], setTotalPages = _f[1];
     var _g = useState(true), loading = _g[0], setLoading = _g[1];
     var _h = useState(null), selectedPost = _h[0], setSelectedPost = _h[1];
-    var siteUrl = 'https://app-info.healthypublicspaces.com';
+    var siteUrl = 'https://healthypublicspaces.com/';
     useEffect(function () {
         var fetchData = function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {

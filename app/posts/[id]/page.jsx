@@ -44,7 +44,7 @@ var PostDetail = function (_a) {
     var params = _a.params;
     var _c = useState(null), post = _c[0], setPost = _c[1];
     var id = params.id;
-    var siteUrl = 'https://app-info.healthypublicspaces.com';
+    var siteUrl = 'https://healthypublicspaces.com/';
     useEffect(function () {
         var fetchPost = function () { return __awaiter(void 0, void 0, void 0, function () {
             var res, error_1;
@@ -77,17 +77,17 @@ var PostDetail = function (_a) {
         <title>{post.title}</title>
         <meta property="og:title" content={post.title}/>
         <meta property="og:description" content={"Check out this post about ".concat(post.title)}/>
-        <meta property="og:image" content={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)}/>
+        <meta property="og:image" content={"https://healthypublicspaces.com/".concat(post.imageUrl)}/>
         <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(post.id)}/>
         <meta property="og:type" content="article"/>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="twitter:title" content={post.title}/>
         <meta name="twitter:description" content={"Check out this post about ".concat(post.title)}/>
-        <meta name="twitter:image" content={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)}/>
+        <meta name="twitter:image" content={"https://healthypublicspaces.com/".concat(post.imageUrl)}/>
       </Head>
       <h1 className="text-2xl font-semibold mb-6">{post.title}</h1>
       <div className="mb-4">
-        {post.imageUrl && (<img src={"https://app-info.healthypublicspaces.com".concat(post.imageUrl)} alt="Post Image" className="w-full h-auto rounded-md"/>)}
+        {post.imageUrl && (<img src={"https://healthypublicspaces.com/".concat(post.imageUrl)} alt="Post Image" className="w-full h-auto rounded-md"/>)}
       </div>
       <div className="mb-4">
         <span className="block text-sm font-medium text-gray-700">Category:</span>
