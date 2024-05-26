@@ -34,18 +34,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { generateMetadata as fetchMetadata } from './metadata';
-import PostDetail from './postDetail';
-export function generateMetadata(_a) {
-    return __awaiter(this, arguments, void 0, function (_b) {
-        var params = _b.params;
-        return __generator(this, function (_c) {
-            return [2 /*return*/, fetchMetadata({ params: params })];
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+import { PrismaClient } from "@prisma/client";
+var prisma = new PrismaClient();
+export default function sitemap() {
+    return __awaiter(this, void 0, void 0, function () {
+        function getPosts() {
+            return __awaiter(this, void 0, void 0, function () {
+                var posts;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, prisma.post.findMany({
+                                select: {
+                                    id: true,
+                                },
+                            })];
+                        case 1:
+                            posts = _a.sent();
+                            return [2 /*return*/, posts];
+                    }
+                });
+            });
+        }
+        var posts, postUrls;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getPosts()];
+                case 1:
+                    posts = _a.sent();
+                    postUrls = posts.map(function (post) { return ({
+                        url: "https://app-info.healthypublicspaces.com/posts/".concat(post.id),
+                        lastModified: post.publishedAt,
+                    }); });
+                    return [2 /*return*/, __spreadArray([
+                            {
+                                url: "https://app-info.healthypublicspaces.com/",
+                                lastModified: new Date(),
+                            },
+                            {
+                                url: "https://app-info.healthypublicspaces.com/tag",
+                                lastModified: new Date(),
+                            }
+                        ], postUrls, true)];
+            }
         });
     });
 }
-var PostPage = function (_a) {
-    var params = _a.params;
-    return <PostDetail params={params}/>;
-};
-export default PostPage;

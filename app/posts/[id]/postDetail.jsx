@@ -1,3 +1,4 @@
+'use client';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,18 +35,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { generateMetadata as fetchMetadata } from './metadata';
-import PostDetail from './postDetail';
-export function generateMetadata(_a) {
-    return __awaiter(this, arguments, void 0, function (_b) {
-        var params = _b.params;
-        return __generator(this, function (_c) {
-            return [2 /*return*/, fetchMetadata({ params: params })];
-        });
-    });
-}
-var PostPage = function (_a) {
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { FacebookShareButton, TwitterShareButton, FacebookIcon, TwitterIcon } from 'react-share';
+var PostDetail = function (_a) {
+    var _b;
     var params = _a.params;
-    return <PostDetail params={params}/>;
+    var _c = useState(null), post = _c[0], setPost = _c[1];
+    var id = params.id;
+    var siteUrl = 'https://app-info.healthypublicspaces.com';
+    useEffect(function () {
+        var fetchPost = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var res, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios.get("/api/posts/".concat(id))];
+                    case 1:
+                        res = _a.sent();
+                        setPost(res.data);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error('Failed to fetch post', error_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        if (id) {
+            fetchPost();
+        }
+    }, [id]);
+    if (!post) {
+        return <div>Loading...</div>;
+    }
+    return (<div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-semibold mb-6">{post.title}</h1>
+      <div className="mb-4">
+        {post.imageUrl && (<img src={"https://app-info.healthypublicspaces.com/".concat(post.imageUrl)} alt="Post Image" className="w-full h-auto rounded-md"/>)}
+      </div>
+      <div className="mb-4">
+        <span className="block text-sm font-medium text-gray-700">Category:</span>
+        <span className="block text-lg">{((_b = post.category) === null || _b === void 0 ? void 0 : _b.name) || 'No Category'}</span>
+      </div>
+      <div className="flex space-x-2 mt-4">
+        <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title}>
+          <FacebookIcon size={32} round/>
+        </FacebookShareButton>
+        <TwitterShareButton url={"".concat(siteUrl, "/posts/").concat(post.id)} title={post.title}>
+          <TwitterIcon size={32} round/>
+        </TwitterShareButton>
+      </div>
+    </div>);
 };
-export default PostPage;
+export default PostDetail;
