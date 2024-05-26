@@ -3,17 +3,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   FacebookShareButton,
-  TwitterShareButton,
   FacebookIcon,
-  TwitterIcon
+  TwitterShareButton,
+  TwitterIcon,
 } from 'react-share';
 import Image from 'next/image';
 import Head from 'next/head';
-
-interface PageProps {
-  imageUrl: string;
-  title: string;
-}
 
 interface Category {
   id: number;
@@ -41,7 +36,7 @@ const PopupModal = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [copySuccess, setCopySuccess] = useState<string>('');
 
-  const siteUrl = 'https://app-info.healthypublicspaces.com/';
+  const siteUrl = 'https://app-info.healthypublicspaces.com';
 
   useEffect(() => {
     fetchCategories();
@@ -87,7 +82,7 @@ const PopupModal = () => {
   const nextPost = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedPost) {
-      const currentIndex = posts.findIndex(post => post.id === selectedPost.id);
+      const currentIndex = posts.findIndex((post) => post.id === selectedPost.id);
       const nextIndex = (currentIndex + 1) % posts.length;
       setSelectedPost(posts[nextIndex]);
     }
@@ -96,7 +91,7 @@ const PopupModal = () => {
   const prevPost = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedPost) {
-      const currentIndex = posts.findIndex(post => post.id === selectedPost.id);
+      const currentIndex = posts.findIndex((post) => post.id === selectedPost.id);
       const prevIndex = (currentIndex - 1 + posts.length) % posts.length;
       setSelectedPost(posts[prevIndex]);
     }
@@ -146,9 +141,7 @@ const PopupModal = () => {
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
             className={`px-2 py-1 text-sm rounded-md ${
-              selectedCategory === category.name
-                ? "bg-indigo-600 text-white"
-                : "bg-gray-200"
+              selectedCategory === category.name ? 'bg-indigo-600 text-white' : 'bg-gray-200'
             }`}
           >
             {category.name}
@@ -158,11 +151,7 @@ const PopupModal = () => {
 
       <div className="masonry-grid">
         {posts.map((post) => (
-          <div
-            key={post.id}
-            className="masonry-item relative"
-            onClick={() => openModal(post)}
-          >
+          <div key={post.id} className="masonry-item relative" onClick={() => openModal(post)}>
             <Image
               src={post.imageUrl}
               width={500}
@@ -199,44 +188,30 @@ const PopupModal = () => {
           <Head>
             <title>{selectedPost.title}</title>
             <meta property="og:title" content={selectedPost.title} />
-            <meta
-              property="og:description"
-              content="Description of your post"
-            />
+            <meta property="og:description" content="Description of your post" />
             <meta property="og:image" content={selectedPost.imageUrl} />
-            <meta
-              property="og:url"
-              content={`${siteUrl}/posts/${selectedPost.id}`}
-            />
+            <meta property="og:url" content={`${siteUrl}/posts/${selectedPost.id}`} />
             <meta property="og:type" content="article" />
           </Head>
 
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-            onClick={closeModal}
-          >
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
             <button
               onClick={prevPost}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: "1rem" }}
+              style={{ padding: '1rem' }}
             >
               &#8249;
             </button>
-            <div
-              className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={closeModal}
                 className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
-                style={{ padding: "1rem" }}
+                style={{ padding: '1rem' }}
               >
                 &times;
               </button>
               <div className="flex justify-between items-center mb-4 w-full">
-                <h2 className="text-2xl font-semibold text-center w-full">
-                  {selectedPost.title}
-                </h2>
+                <h2 className="text-2xl font-semibold text-center w-full">{selectedPost.title}</h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
                 <Image
@@ -248,17 +223,11 @@ const PopupModal = () => {
                 />
               </div>
               <div className="text-right w-full flex justify-between items-center">
-                <span className="text-gray-700">
-                  Views: {selectedPost.views}
-                </span>
-                <span className="text-gray-700">
-                  Downloads: {selectedPost.downloads}
-                </span>
+                <span className="text-gray-700">Views: {selectedPost.views}</span>
+                <span className="text-gray-700">Downloads: {selectedPost.downloads}</span>
                 <a
                   href="#"
-                  onClick={() =>
-                    handleDownload(selectedPost.zipUrl, selectedPost.id)
-                  }
+                  onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
                   className="px-2 py-1 text-sm bg-green-500 text-white rounded-md"
                 >
                   Download free
@@ -266,28 +235,20 @@ const PopupModal = () => {
               </div>
 
               <div className="flex space-x-2 mt-4">
-                <FacebookShareButton
-                  url={`${siteUrl}/posts/${selectedPost.id}`}
-                  title={selectedPost.title}
-                >
+                <FacebookShareButton url={`${siteUrl}/posts/${selectedPost.id}`} title={selectedPost.title}>
                   <FacebookIcon size={32} round />
                 </FacebookShareButton>
 
-                <button
-                  onClick={handleCopy}
-                  className="px-2 py-1 text-sm bg-green-500 text-white rounded-md"
-                >
+                <button onClick={handleCopy} className="px-2 py-1 text-sm bg-green-500 text-white rounded-md">
                   Copy Link
                 </button>
               </div>
-              {copySuccess && (
-                <div className="mt-2 text-green-600">{copySuccess}</div>
-              )}
+              {copySuccess && <div className="mt-2 text-green-600">{copySuccess}</div>}
             </div>
             <button
               onClick={nextPost}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: "1rem" }}
+              style={{ padding: '1rem' }}
             >
               &#8250;
             </button>
@@ -296,6 +257,6 @@ const PopupModal = () => {
       )}
     </div>
   );
-}
+};
 
 export default PopupModal;

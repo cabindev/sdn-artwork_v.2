@@ -1,4 +1,3 @@
-// app/posts/create/page.tsx
 'use client';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -39,13 +38,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 var Create = function () {
     var _a = useState(''), title = _a[0], setTitle = _a[1];
     var _b = useState(''), content = _b[0], setContent = _b[1];
     var _c = useState(''), categoryId = _c[0], setCategoryId = _c[1];
     var _d = useState([]), categories = _d[0], setCategories = _d[1];
     var _e = useState(null), image = _e[0], setImage = _e[1];
-    var _f = useState(null), zip = _f[0], setZipFile = _f[1];
+    var _f = useState(null), imagePreview = _f[0], setImagePreview = _f[1];
+    var _g = useState(null), zip = _g[0], setZipFile = _g[1];
+    var _h = useState(null), zipPreview = _h[0], setZipPreview = _h[1];
     var router = useRouter();
     var fetchCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
         var response, error_1;
@@ -69,6 +71,32 @@ var Create = function () {
     useEffect(function () {
         fetchCategories();
     }, []);
+    var handleImageChange = function (e) {
+        var _a;
+        var file = ((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
+        setImage(file);
+        if (file) {
+            var reader_1 = new FileReader();
+            reader_1.onloadend = function () {
+                setImagePreview(reader_1.result);
+            };
+            reader_1.readAsDataURL(file);
+        }
+        else {
+            setImagePreview(null);
+        }
+    };
+    var handleZipChange = function (e) {
+        var _a;
+        var file = ((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
+        setZipFile(file);
+        if (file) {
+            setZipPreview(file.name);
+        }
+        else {
+            setZipPreview(null);
+        }
+    };
     var handleSubmit = function (e) { return __awaiter(void 0, void 0, void 0, function () {
         var formData, error_2;
         return __generator(this, function (_a) {
@@ -133,13 +161,19 @@ var Create = function () {
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Image
           </label>
-          <input type="file" name="image" id="image" onChange={function (e) { var _a; return setImage(((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null); }} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required/>
+          <input type="file" name="image" id="image" onChange={handleImageChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required/>
+          {imagePreview && (<div className="mt-4">
+              <Image src={imagePreview} alt="Image Preview" width={200} height={200} className="rounded-md"/>
+            </div>)}
         </div>
         <div>
           <label htmlFor="zip" className="block text-sm font-medium text-gray-700">
             ZIP
           </label>
-          <input type="file" name="zip" id="zip" onChange={function (e) { var _a; return setZipFile(((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null); }} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required/>
+          <input type="file" name="zip" id="zip" onChange={handleZipChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required/>
+          {zipPreview && (<div className="mt-4">
+              <p>Selected ZIP: {zipPreview}</p>
+            </div>)}
         </div>
         <div>
           <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

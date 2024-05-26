@@ -38,6 +38,7 @@ import { writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 var prisma = new PrismaClient();
 export var GET = function (request) { return __awaiter(void 0, void 0, void 0, function () {
     var searchParams, category, search, sort, page, limit, skip, whereCondition, _a, posts, totalPosts, totalPages, error_1;
@@ -188,7 +189,9 @@ export var PATCH = function (request) { return __awaiter(void 0, void 0, void 0,
             case 5:
                 _b.sent();
                 _b.label = 6;
-            case 6: return [2 /*return*/, NextResponse.json({ msg: 'Update successful' })];
+            case 6:
+                revalidatePath('/');
+                return [2 /*return*/, NextResponse.json({ msg: 'Update successful' })];
             case 7:
                 error_3 = _b.sent();
                 return [2 /*return*/, NextResponse.json({ error: error_3 }, { status: 500 })];

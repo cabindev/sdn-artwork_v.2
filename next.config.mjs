@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://app-info.healthypublicspaces.com/',
+        hostname: 'app-info.healthypublicspaces.com',
         port: '',
         pathname: '/images/**',
       },
@@ -16,9 +17,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    runtime: 'edge',
-  },
+  
 };
 
 export default nextConfig;

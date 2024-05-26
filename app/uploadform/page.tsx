@@ -1,3 +1,4 @@
+//uploadform/page.tsx
 'use client';
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';

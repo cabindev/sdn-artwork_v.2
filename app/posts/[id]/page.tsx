@@ -22,10 +22,11 @@ interface Post {
   category: Category;
 }
 
+
 const PostDetail = ({ params }: { params: { id: string } }) => {
   const [post, setPost] = useState<Post | null>(null);
   const { id } = params;
-  const siteUrl = 'https://app-info.healthypublicspaces.com/';
+  const siteUrl = 'https://app-info.healthypublicspaces.com';
 
   useEffect(() => {
     const fetchPost = async () => {

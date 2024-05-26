@@ -1,3 +1,4 @@
+//app/api/uploads/route.ts
 import { type NextRequest } from 'next/server';
 import { readdir, unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
