@@ -1,8 +1,8 @@
-// app/posts/create/page.tsx
 'use client'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const Create = () => {
   const [title, setTitle] = useState('')
@@ -10,7 +10,9 @@ const Create = () => {
   const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState([])
   const [image, setImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [zip, setZipFile] = useState<File | null>(null)
+  const [zipPreview, setZipPreview] = useState<string | null>(null)
   const router = useRouter()
 
   const fetchCategories = async () => {
@@ -25,6 +27,30 @@ const Create = () => {
   useEffect(() => {
     fetchCategories()
   }, [])
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setImage(file)
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setImagePreview(null)
+    }
+  }
+
+  const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setZipFile(file)
+    if (file) {
+      setZipPreview(file.name)
+    } else {
+      setZipPreview(null)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -118,10 +144,21 @@ const Create = () => {
             type="file"
             name="image"
             id="image"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
+            onChange={handleImageChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             required
           />
+          {imagePreview && (
+            <div className="mt-4">
+              <Image
+                src={imagePreview}
+                alt="Image Preview"
+                width={200}
+                height={200}
+                className="rounded-md"
+              />
+            </div>
+          )}
         </div>
         <div>
           <label
@@ -134,10 +171,15 @@ const Create = () => {
             type="file"
             name="zip"
             id="zip"
-            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
+            onChange={handleZipChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             required
           />
+          {zipPreview && (
+            <div className="mt-4">
+              <p>Selected ZIP: {zipPreview}</p>
+            </div>
+          )}
         </div>
         <div>
           <button
@@ -149,7 +191,7 @@ const Create = () => {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
 export default Create

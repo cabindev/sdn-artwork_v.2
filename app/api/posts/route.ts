@@ -3,7 +3,7 @@ import { readdir, unlink, writeFile } from 'fs/promises';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
-
+import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
@@ -128,7 +128,7 @@ export const PATCH = async (request: NextRequest) => {
       });
     }
 
-
+    revalidatePath('/');
 
     return NextResponse.json({ msg: 'Update successful' });
   } catch (error) {
