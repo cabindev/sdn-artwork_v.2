@@ -105,6 +105,8 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
+    // Revalidate the path to ensure the new post is immediately visible
+    revalidatePath('/');
 
     return NextResponse.json(newPost);
   } catch (error) {
@@ -128,6 +130,7 @@ export const PATCH = async (request: NextRequest) => {
       });
     }
 
+    // Revalidate the path to ensure the updated post data is immediately visible
     revalidatePath('/');
 
     return NextResponse.json({ msg: 'Update successful' });

@@ -1,9 +1,10 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { revalidatePath } from 'next/cache';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export async function GET(
   req: NextRequest,
@@ -11,7 +12,7 @@ export async function GET(
 ) {
   return NextResponse.json(await prisma.post.findUnique({
     where: { id: Number(params.id) },
-  }))
+  }));
 }
 
 export async function PUT(
@@ -64,12 +65,16 @@ export async function PUT(
         ...(imageUrl && { imageUrl }),
         ...(zipUrl && { zipUrl }),
       },
-    })
-    return NextResponse.json(post)
+    });
+
+    // Revalidate the path to ensure the updated post data is immediately visible
+    revalidatePath('/');
+
+    return NextResponse.json(post);
   } catch (error) {
     return new Response(error as BodyInit, {
       status: 500,
-    })
+    });
   }
 }
 
@@ -78,12 +83,17 @@ export async function DELETE(
   { params }: { params: { id: string } },
 ) {
   try {
-    return NextResponse.json(await prisma.post.delete({
+    const deletedPost = await prisma.post.delete({
       where: { id: Number(params.id) },
-    }))
+    });
+
+    // Revalidate the path to ensure the post is removed from the UI
+    revalidatePath('/');
+
+    return NextResponse.json(deletedPost);
   } catch (error) {
     return new Response(error as BodyInit, {
       status: 500,
-    })
+    });
   }
 }

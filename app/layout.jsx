@@ -3,7 +3,7 @@ import "./globals.css";
 var inter = Inter({ subsets: ["latin"] });
 export var metadata = {
     metadataBase: new URL("https://app-info.healthypublicspaces.com/"),
-    // title: "Dev Blook - A blog for developers",
+    // title: "sdn-workspaces",
     title: {
         default: "Blog for Organization",
         template: '%s | Blog for Organization'

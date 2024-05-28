@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://app-info.healthypublicspaces.com/"),
-  // title: "Dev Blook - A blog for developers",
+  // title: "sdn-workspaces",
   title: {
     default: "Blog for Organization",
     template: '%s | Blog for Organization'

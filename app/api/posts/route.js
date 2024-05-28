@@ -154,6 +154,8 @@ export var POST = function (request) { return __awaiter(void 0, void 0, void 0, 
                     })];
             case 8:
                 newPost = _a.sent();
+                // Revalidate the path to ensure the new post is immediately visible
+                revalidatePath('/');
                 return [2 /*return*/, NextResponse.json(newPost)];
             case 9:
                 error_2 = _a.sent();
@@ -190,6 +192,7 @@ export var PATCH = function (request) { return __awaiter(void 0, void 0, void 0,
                 _b.sent();
                 _b.label = 6;
             case 6:
+                // Revalidate the path to ensure the updated post data is immediately visible
                 revalidatePath('/');
                 return [2 /*return*/, NextResponse.json({ msg: 'Update successful' })];
             case 7:
