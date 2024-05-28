@@ -187,7 +187,7 @@ var PopupModal = function () {
 
       <div className="masonry-grid">
         {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative" onClick={function () { return openModal(post); }}>
-            <Image src={post.imageUrl} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md"/>
+            <Image src={"https://app-info.healthypublicspaces.com/".concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md"/>
           </div>); })}
       </div>
 
@@ -208,7 +208,7 @@ var PopupModal = function () {
             <title>{selectedPost.title}</title>
             <meta property="og:title" content={selectedPost.title}/>
             <meta property="og:description" content="Description of your post"/>
-            <meta property="og:image" content={selectedPost.imageUrl}/>
+            <meta property="og:image" content={"https://app-info.healthypublicspaces.com/".concat(selectedPost.imageUrl)}/>
             <meta property="og:url" content={"".concat(siteUrl, "/posts/").concat(selectedPost.id)}/>
             <meta property="og:type" content="article"/>
           </Head>
@@ -225,7 +225,7 @@ var PopupModal = function () {
                 <h2 className="text-2xl font-semibold text-center w-full">{selectedPost.title}</h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-                <Image src={selectedPost.imageUrl} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
+                <Image src={"https://app-info.healthypublicspaces.com/".concat(selectedPost.imageUrl)} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
               </div>
               <div className="text-right w-full flex justify-between items-center">
                 <span className="text-gray-700">Views: {selectedPost.views}</span>

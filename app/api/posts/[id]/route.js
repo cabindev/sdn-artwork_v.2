@@ -49,6 +49,7 @@ import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { revalidatePath } from 'next/cache';
 var prisma = new PrismaClient();
 export function GET(req_1, _a) {
     return __awaiter(this, arguments, void 0, function (req, _b) {
@@ -117,6 +118,8 @@ export function PUT(req_1, _a) {
                         })];
                 case 8:
                     post = _c.sent();
+                    // Revalidate the path to ensure the updated post data is immediately visible
+                    revalidatePath('/');
                     return [2 /*return*/, NextResponse.json(post)];
                 case 9:
                     error_1 = _c.sent();
@@ -130,19 +133,22 @@ export function PUT(req_1, _a) {
 }
 export function DELETE(req_1, _a) {
     return __awaiter(this, arguments, void 0, function (req, _b) {
-        var _c, _d, error_2;
+        var deletedPost, error_2;
         var params = _b.params;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _e.trys.push([0, 2, , 3]);
-                    _d = (_c = NextResponse).json;
+                    _c.trys.push([0, 2, , 3]);
                     return [4 /*yield*/, prisma.post.delete({
                             where: { id: Number(params.id) },
                         })];
-                case 1: return [2 /*return*/, _d.apply(_c, [_e.sent()])];
+                case 1:
+                    deletedPost = _c.sent();
+                    // Revalidate the path to ensure the post is removed from the UI
+                    revalidatePath('/');
+                    return [2 /*return*/, NextResponse.json(deletedPost)];
                 case 2:
-                    error_2 = _e.sent();
+                    error_2 = _c.sent();
                     return [2 /*return*/, new Response(error_2, {
                             status: 500,
                         })];
