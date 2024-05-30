@@ -1,5 +1,5 @@
 'use client';
-
+import { FaRegCopy,FaFacebook } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
@@ -141,8 +141,10 @@ const PopupModal = () => {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
-            className={`px-2 py-1 text-sm rounded-md ${
-              selectedCategory === category.name ? 'bg-indigo-600 text-white' : 'bg-gray-200'
+            className={`px-2 py-1 rounded-md text-xs md:text-sm ${
+              selectedCategory === category.name
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-200"
             }`}
           >
             {category.name}
@@ -152,9 +154,13 @@ const PopupModal = () => {
 
       <div className="masonry-grid">
         {posts.map((post) => (
-          <div key={post.id} className="masonry-item relative" onClick={() => openModal(post)}>
+          <div
+            key={post.id}
+            className="masonry-item relative"
+            onClick={() => openModal(post)}
+          >
             <Image
-              src={`https://app-info.healthypublicspaces.com/${post.imageUrl}`}
+              src={post.imageUrl}
               width={500}
               height={500}
               alt={post.title}
@@ -168,7 +174,7 @@ const PopupModal = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50"
+          className="px-2 py-1 mx-2 rounded-md bg-gray-200 disabled:opacity-50"
         >
           Previous
         </button>
@@ -178,7 +184,7 @@ const PopupModal = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50"
+          className="px-2 py-1 rounded-md bg-gray-200 disabled:opacity-50"
         >
           Next
         </button>
@@ -189,67 +195,101 @@ const PopupModal = () => {
           <Head>
             <title>{selectedPost.title}</title>
             <meta property="og:title" content={selectedPost.title} />
-            <meta property="og:description" content="Description of your post" />
-            <meta property="og:image" content={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`} />
-            <meta property="og:url" content={`${siteUrl}/posts/${selectedPost.id}`} />
+            <meta
+              property="og:description"
+              content="Description of your post"
+            />
+            <meta
+              property="og:image"
+              content={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`}
+            />
+            <meta
+              property="og:url"
+              content={`${siteUrl}/posts/${selectedPost.id}`}
+            />
             <meta property="og:type" content="article" />
           </Head>
 
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            onClick={closeModal}
+          >
             <button
               onClick={prevPost}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: '1rem' }}
+              style={{ padding: "1rem" }}
             >
               &#8249;
             </button>
-            <div className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 onClick={closeModal}
                 className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
-                style={{ padding: '1rem' }}
+                style={{ padding: "1rem" }}
               >
                 &times;
               </button>
               <div className="flex justify-between items-center mb-4 w-full">
-                <h2 className="text-2xl font-semibold text-center w-full">{selectedPost.title}</h2>
+                <h2 className="text-2xl font-semibold text-center w-full">
+                  {selectedPost.title}
+                </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
                 <Image
-                  src={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`}
+                  src={selectedPost.imageUrl}
                   alt={selectedPost.title}
                   width={500}
                   height={500}
                   className="object-contain w-full h-full max-h-96"
                 />
               </div>
-              <div className="text-right w-full flex justify-between items-center">
-                <span className="text-gray-700">Views: {selectedPost.views}</span>
-                <span className="text-gray-700">Downloads: {selectedPost.downloads}</span>
-                <a
-                  href="#"
-                  onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
-                  className="px-2 py-1 text-sm bg-green-500 text-white rounded-md"
-                >
-                  Download free
-                </a>
+              <div className="text-left w-full flex flex-col items-start">
+                <span className="text-gray-600 mb-2">
+                  Views: {selectedPost.views}
+                </span>
+                <div className="w-full flex items-center justify-between">
+                  <span className="text-gray-600">
+                    Downloads: {selectedPost.downloads}
+                  </span>
+                  <a
+                    href="#"
+                    onClick={() =>
+                      handleDownload(selectedPost.zipUrl, selectedPost.id)
+                    }
+                    className="px-2 py-1 text-sm bg-green-400 text-white rounded-md"
+                  >
+                    Download free
+                  </a>
+                </div>
               </div>
 
-              <div className="flex space-x-2 mt-4">
-                <FacebookShareButton url={`${siteUrl}/posts/${selectedPost.id}`} title={selectedPost.title}>
-                  <FacebookIcon size={32} round />
+              <div className="flex justify-start items-start space-x-2 mt-4">
+                <FacebookShareButton
+                  url={`${siteUrl}/posts/${selectedPost.id}`}
+                  title={selectedPost.title}
+                >
+                  <FaFacebook size={32} color="black" />
                 </FacebookShareButton>
 
-                <button onClick={handleCopy} className="px-2 py-1 text-sm bg-green-500 text-white rounded-md">
+                <button
+                  onClick={handleCopy}
+                  className="px-2 py-1 text-sm text-white bg-black rounded-md"
+                >
                   Copy Link
                 </button>
               </div>
-              {copySuccess && <div className="mt-2 text-green-600">{copySuccess}</div>}
+
+              {copySuccess && (
+                <div className="mt-2 text-green-600">{copySuccess}</div>
+              )}
             </div>
             <button
               onClick={nextPost}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: '1rem' }}
+              style={{ padding: "1rem" }}
             >
               &#8250;
             </button>

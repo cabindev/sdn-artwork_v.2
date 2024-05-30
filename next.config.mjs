@@ -1,8 +1,6 @@
-//next.confix.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['app-info.healthypublicspaces.com'], // เพิ่ม domains นี้ด้วย
     remotePatterns: [
       {
         protocol: 'https',
@@ -21,4 +19,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-
