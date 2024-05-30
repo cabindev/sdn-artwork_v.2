@@ -68,7 +68,7 @@ const Create = () => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      router.push('/')
+      router.push('./')
     } catch (error) {
       console.error(error)
     }
