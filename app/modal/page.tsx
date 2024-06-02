@@ -143,7 +143,7 @@ const PopupModal = () => {
             onClick={() => setSelectedCategory(category.name)}
             className={`px-2 py-1 rounded-md text-xs md:text-sm ${
               selectedCategory === category.name
-                ? "bg-indigo-600 text-white"
+                ? "bg-black text-white"
                 : "bg-gray-200"
             }`}
           >
@@ -160,11 +160,11 @@ const PopupModal = () => {
             onClick={() => openModal(post)}
           >
             <Image
-              src={`${siteUrl}${post.imageUrl}`}
+              src={`${post.imageUrl}`}
               width={500}
               height={500}
               alt={post.title}
-              className="object-cover w-full h-full rounded-md"
+              className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
             />
           </div>
         ))}
@@ -174,7 +174,7 @@ const PopupModal = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-2 py-1 mx-2 rounded-md bg-gray-200 disabled:opacity-50"
+          className="px-2 py-1 mx-2 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50"
         >
           Previous
         </button>
@@ -184,7 +184,7 @@ const PopupModal = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-2 py-1 rounded-md bg-gray-200 disabled:opacity-50"
+          className="px-2 py-1 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50"
         >
           Next
         </button>
@@ -239,7 +239,7 @@ const PopupModal = () => {
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
                 <Image
-                  src={`${siteUrl}${selectedPost.imageUrl}`}
+                  src={`${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
                   width={500}
                   height={500}

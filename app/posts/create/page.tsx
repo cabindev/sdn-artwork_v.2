@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import imageCompression from 'browser-image-compression'
 
 const Create = () => {
   const [title, setTitle] = useState('')
@@ -28,29 +29,62 @@ const Create = () => {
     fetchCategories()
   }, [])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setImage(file)
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target;
+    const file = fileInput.files?.[0] || null;
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string)
+      const fileName = file.name.toLowerCase();
+      const allowedExtensions = ['.jpg', '.jpeg', '.webp', '.svg', '.png'];
+  
+      const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+  
+      if (!isValidExtension) {
+        alert("Only files with extensions .jpg, .jpeg, .webp, .svg, .png are allowed");
+        // Clear the selected file
+        fileInput.value = '';
+        return;
       }
-      reader.readAsDataURL(file)
+  
+      try {
+        const options = {
+          maxSizeMB: 0.5, // 500 KB
+          maxWidthOrHeight: 1024,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+  
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+  
+        setImage(compressedFile);
+      } catch (error) {
+        console.error('Error compressing image', error);
+      }
     } else {
-      setImagePreview(null)
+      setImage(null);
+      setImagePreview(null);
     }
-  }
-
+  };
+  
+  
   const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setZipFile(file)
+    const file = e.target.files?.[0] || null;
     if (file) {
-      setZipPreview(file.name)
+      if (!file.name.endsWith('.zip')) {
+        alert("Only ZIP files are allowed");
+        return;
+      }
+      setZipFile(file);
+      setZipPreview(file.name);
     } else {
-      setZipPreview(null)
+      setZipFile(null);
+      setZipPreview(null);
     }
-  }
+  };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -83,7 +117,7 @@ const Create = () => {
             htmlFor="title"
             className="block text-sm font-medium text-gray-700"
           >
-            Title
+            Name
           </label>
           <input
             type="text"
@@ -121,7 +155,7 @@ const Create = () => {
             htmlFor="content"
             className="block text-sm font-medium text-gray-700"
           >
-            Content
+            Descriptions
           </label>
           <textarea
             name="content"
