@@ -1,8 +1,6 @@
 // components/Footer.js
-
 export default function Footer() {
-  return (
-    <footer className="bg-gray-800 text-white py-4 w-full ">
+    return (<footer className="bg-gray-800 text-white py-4 w-full ">
       <div className="container mx-auto text-center">
         <p className="text-sm">
           &copy; {new Date().getFullYear()} sdnthailand. All rights reserved.
@@ -15,8 +13,5 @@ export default function Footer() {
           {/* <a href="https://instagram.com/yourcompany" className="ml-2 text-blue-400 hover:text-blue-600">Instagram</a> */}
         </p>
       </div>
-    </footer>
-  );
+    </footer>);
 }
-
-  

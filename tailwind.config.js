@@ -4,6 +4,7 @@ var config = {
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    darkMode: 'class', // เปิดใช้ dark mode
     theme: {
         extend: {
             backgroundImage: {
@@ -12,8 +13,9 @@ var config = {
             },
         },
     },
-    plugins: [
-        require('daisyui'),
-    ],
+    plugins: [require('daisyui')],
+    daisyui: {
+        themes: ["light", "dark", "synthwave"],
+    },
 };
 export default config;

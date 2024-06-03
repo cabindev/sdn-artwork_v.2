@@ -35,9 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import { FaFacebook } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FacebookShareButton, FacebookIcon, } from 'react-share';
+import { FacebookShareButton, } from 'react-share';
 import Image from 'next/image';
 import Head from 'next/head';
 var PopupModal = function () {
@@ -84,7 +85,7 @@ var PopupModal = function () {
                         category: selectedCategory,
                         search: search,
                         page: currentPage.toString(),
-                        limit: '10',
+                        limit: '20',
                     }).toString();
                     return [4 /*yield*/, axios.get("/api/posts?".concat(query))];
                 case 1:
@@ -180,25 +181,28 @@ var PopupModal = function () {
       </div>
 
       <div className="flex space-x-4 overflow-x-auto mb-6">
-        {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-2 py-1 text-sm rounded-md ".concat(selectedCategory === category.name ? 'bg-indigo-600 text-white' : 'bg-gray-200')}>
+        {categories.map(function (category) { return (<button key={category.id} onClick={function () { return setSelectedCategory(category.name); }} className={"px-2 py-1 rounded-md text-xs md:text-sm ".concat(selectedCategory === category.name
+                ? "bg-black text-white"
+                : "bg-gray-200")}>
             {category.name}
           </button>); })}
       </div>
 
       <div className="masonry-grid">
-        {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative" onClick={function () { return openModal(post); }}>
-            <Image src={"https://app-info.healthypublicspaces.com/".concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md"/>
-          </div>); })}
-      </div>
+  {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl" onClick={function () { return openModal(post); }}>
+      <Image src={"".concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"/>
+    </div>); })}
+    </div>
+
 
       <div className="flex justify-center mt-8">
-        <button onClick={function () { return handlePageChange(currentPage - 1); }} disabled={currentPage === 1} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
+        <button onClick={function () { return handlePageChange(currentPage - 1); }} disabled={currentPage === 1} className="px-2 py-1 mx-2 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50">
           Previous
         </button>
         <span className="px-4 py-2">
           Page {currentPage} of {totalPages}
         </span>
-        <button onClick={function () { return handlePageChange(currentPage + 1); }} disabled={currentPage === totalPages} className="px-4 py-2 mx-2 rounded-md bg-gray-200 disabled:opacity-50">
+        <button onClick={function () { return handlePageChange(currentPage + 1); }} disabled={currentPage === totalPages} className="px-2 py-1 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50">
           Next
         </button>
       </div>
@@ -214,39 +218,50 @@ var PopupModal = function () {
           </Head>
 
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={closeModal}>
-            <button onClick={prevPost} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: '1rem' }}>
+            <button onClick={prevPost} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: "1rem" }}>
               &#8249;
             </button>
             <div className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center" onClick={function (e) { return e.stopPropagation(); }}>
-              <button onClick={closeModal} className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl" style={{ padding: '1rem' }}>
+              <button onClick={closeModal} className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl" style={{ padding: "1rem" }}>
                 &times;
               </button>
               <div className="flex justify-between items-center mb-4 w-full">
-                <h2 className="text-2xl font-semibold text-center w-full">{selectedPost.title}</h2>
+                <h2 className="text-2xl font-semibold text-center w-full">
+                  {selectedPost.title}
+                </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-                <Image src={"https://app-info.healthypublicspaces.com/".concat(selectedPost.imageUrl)} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
+                <Image src={"".concat(selectedPost.imageUrl)} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
               </div>
-              <div className="text-right w-full flex justify-between items-center">
-                <span className="text-gray-700">Views: {selectedPost.views}</span>
-                <span className="text-gray-700">Downloads: {selectedPost.downloads}</span>
-                <a href="#" onClick={function () { return handleDownload(selectedPost.zipUrl, selectedPost.id); }} className="px-2 py-1 text-sm bg-green-500 text-white rounded-md">
-                  Download free
-                </a>
+              <div className="text-left w-full flex flex-col items-start">
+                <span className="text-gray-600 mb-2">
+                  Views: {selectedPost.views}
+                </span>
+                <div className="w-full flex items-center justify-between">
+                  <span className="text-gray-600">
+                    Downloads: {selectedPost.downloads}
+                  </span>
+                  <a href="#" onClick={function () {
+                return handleDownload(selectedPost.zipUrl, selectedPost.id);
+            }} className="px-2 py-1 text-sm bg-green-400 text-white rounded-md">
+                    Download free
+                  </a>
+                </div>
               </div>
 
-              <div className="flex space-x-2 mt-4">
+              <div className="flex justify-start items-start space-x-2 mt-4">
                 <FacebookShareButton url={"".concat(siteUrl, "/posts/").concat(selectedPost.id)} title={selectedPost.title}>
-                  <FacebookIcon size={32} round/>
+                  <FaFacebook size={32} color="black"/>
                 </FacebookShareButton>
 
-                <button onClick={handleCopy} className="px-2 py-1 text-sm bg-green-500 text-white rounded-md">
+                <button onClick={handleCopy} className="px-2 py-1 text-sm text-white bg-black rounded-md">
                   Copy Link
                 </button>
               </div>
-              {copySuccess && <div className="mt-2 text-green-600">{copySuccess}</div>}
+
+              {copySuccess && (<div className="mt-2 text-green-600">{copySuccess}</div>)}
             </div>
-            <button onClick={nextPost} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: '1rem' }}>
+            <button onClick={nextPost} className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50" style={{ padding: "1rem" }}>
               &#8250;
             </button>
           </div>

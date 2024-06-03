@@ -48,7 +48,7 @@ export default function ListPost() {
     useEffect(function () {
         fetchCategories();
         fetchPosts();
-    }, []);
+    }, [category, search, sort]);
     var fetchPosts = function () { return __awaiter(_this, void 0, void 0, function () {
         var query, res, data, error_1;
         return __generator(this, function (_a) {
@@ -127,26 +127,26 @@ export default function ListPost() {
     return (<div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Blog Posts</h1>
   
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex gap-4">
-          <input type="text" placeholder="Search by title..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
-          <select value={category} onChange={function (e) { return setCategory(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+        <div className="flex flex-wrap gap-4 w-full sm:w-auto">
+          <input type="text" placeholder="Search by title..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto"/>
+          <select value={category} onChange={function (e) { return setCategory(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto">
             <option value="">Select Category</option>
             {categories.map(function (cat) { return (<option key={cat.id} value={cat.name}>
                 {cat.name}
               </option>); })}
           </select>
-          <select value={sort} onChange={function (e) { return setSort(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <select value={sort} onChange={function (e) { return setSort(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto">
             <option value="desc">Latest</option>
             <option value="asc">Oldest</option>
           </select>
-          <button onClick={handleApplyFilters} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+          <button onClick={handleApplyFilters} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors w-full sm:w-auto">
             Apply
           </button>
         </div>
       </div>
   
-      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+      <div className="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -171,29 +171,29 @@ export default function ListPost() {
             {posts.map(function (post) {
             var _a;
             return (<tr key={post.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-normal">
                   <div className="text-sm font-medium text-gray-900">
                     {post.title}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-normal">
                   <div className="text-sm font-medium text-gray-900">
                     {((_a = post.category) === null || _a === void 0 ? void 0 : _a.name) || 'No Category'}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-normal">
                   {post.imageUrl && (<div className="avatar">
                       <div className="w-8 rounded">
                         <img src={post.imageUrl} alt={"image-".concat(post.id)} className="object-cover"/>
                       </div>
                     </div>)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-6 py-4 whitespace-normal">
                   {post.zipUrl && (<a href={post.zipUrl} download className="text-indigo-600 hover:text-indigo-900">
                       Download ZIP
                     </a>)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td className="px-6 py-4 whitespace-normal text-sm font-medium">
                   <Link className="text-indigo-600 hover:text-indigo-900 mr-4" href={"/posts/edit/".concat(post.id)}>
                     Edit
                   </Link>
