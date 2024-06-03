@@ -160,7 +160,7 @@ const PopupModal = () => {
       onClick={() => openModal(post)}
     >
       <Image
-        src={post.imageUrl}
+        src={`https://app-info.healthypublicspaces.com/${post.imageUrl}`}
         width={500}
         height={500}
         alt={post.title}
@@ -240,7 +240,7 @@ const PopupModal = () => {
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
                 <Image
-                  src={`${selectedPost.imageUrl}`}
+                  src={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
                   width={500}
                   height={500}
