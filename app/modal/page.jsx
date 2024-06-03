@@ -190,7 +190,7 @@ var PopupModal = function () {
 
       <div className="masonry-grid">
   {posts.map(function (post) { return (<div key={post.id} className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl" onClick={function () { return openModal(post); }}>
-      <Image src={post.imageUrl} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"/>
+      <Image src={"https://app-info.healthypublicspaces.com/".concat(post.imageUrl)} width={500} height={500} alt={post.title} className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"/>
     </div>); })}
     </div>
 
@@ -231,7 +231,7 @@ var PopupModal = function () {
                 </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-                <Image src={"".concat(selectedPost.imageUrl)} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
+                <Image src={"https://app-info.healthypublicspaces.com/".concat(selectedPost.imageUrl)} alt={selectedPost.title} width={500} height={500} className="object-contain w-full h-full max-h-96"/>
               </div>
               <div className="text-left w-full flex flex-col items-start">
                 <span className="text-gray-600 mb-2">
