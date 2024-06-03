@@ -59,7 +59,7 @@ const PopupModal = () => {
         category: selectedCategory,
         search,
         page: currentPage.toString(),
-        limit: '10',
+        limit: '20',
       }).toString();
       const res = await axios.get(`/api/posts?${query}`);
       setPosts(res.data.posts);
@@ -153,22 +153,23 @@ const PopupModal = () => {
       </div>
 
       <div className="masonry-grid">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="masonry-item relative"
-            onClick={() => openModal(post)}
-          >
-            <Image
-              src={`${post.imageUrl}`}
-              width={500}
-              height={500}
-              alt={post.title}
-              className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
-            />
-          </div>
-        ))}
-      </div>
+  {posts.map((post) => (
+    <div
+      key={post.id}
+      className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl"
+      onClick={() => openModal(post)}
+    >
+      <Image
+        src={`${post.imageUrl}`}
+        width={500}
+        height={500}
+        alt={post.title}
+        className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
+      />
+    </div>
+  ))}
+</div>
+
 
       <div className="flex justify-center mt-8">
         <button

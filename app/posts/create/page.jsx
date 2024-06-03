@@ -39,6 +39,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import imageCompression from 'browser-image-compression';
 var Create = function () {
     var _a = useState(''), title = _a[0], setTitle = _a[1];
     var _b = useState(''), content = _b[0], setContent = _b[1];
@@ -71,34 +72,73 @@ var Create = function () {
     useEffect(function () {
         fetchCategories();
     }, []);
-    var handleImageChange = function (e) {
+    var handleImageChange = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+        var fileInput, file, fileName_1, allowedExtensions, isValidExtension, options, compressedFile, reader_1, error_2;
         var _a;
-        var file = ((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
-        setImage(file);
-        if (file) {
-            var reader_1 = new FileReader();
-            reader_1.onloadend = function () {
-                setImagePreview(reader_1.result);
-            };
-            reader_1.readAsDataURL(file);
-        }
-        else {
-            setImagePreview(null);
-        }
-    };
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    fileInput = e.target;
+                    file = ((_a = fileInput.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
+                    if (!file) return [3 /*break*/, 5];
+                    fileName_1 = file.name.toLowerCase();
+                    allowedExtensions = ['.jpg', '.jpeg', '.webp', '.svg', '.png'];
+                    isValidExtension = allowedExtensions.some(function (ext) { return fileName_1.endsWith(ext); });
+                    if (!isValidExtension) {
+                        alert("Only files with extensions .jpg, .jpeg, .webp, .svg, .png are allowed");
+                        // Clear the selected file
+                        fileInput.value = '';
+                        return [2 /*return*/];
+                    }
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
+                    options = {
+                        maxSizeMB: 0.5, // 500 KB
+                        maxWidthOrHeight: 1024,
+                        useWebWorker: true,
+                    };
+                    return [4 /*yield*/, imageCompression(file, options)];
+                case 2:
+                    compressedFile = _b.sent();
+                    reader_1 = new FileReader();
+                    reader_1.onloadend = function () {
+                        setImagePreview(reader_1.result);
+                    };
+                    reader_1.readAsDataURL(compressedFile);
+                    setImage(compressedFile);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _b.sent();
+                    console.error('Error compressing image', error_2);
+                    return [3 /*break*/, 4];
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    setImage(null);
+                    setImagePreview(null);
+                    _b.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); };
     var handleZipChange = function (e) {
         var _a;
         var file = ((_a = e.target.files) === null || _a === void 0 ? void 0 : _a[0]) || null;
-        setZipFile(file);
         if (file) {
+            if (!file.name.endsWith('.zip')) {
+                alert("Only ZIP files are allowed");
+                return;
+            }
+            setZipFile(file);
             setZipPreview(file.name);
         }
         else {
+            setZipFile(null);
             setZipPreview(null);
         }
     };
     var handleSubmit = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-        var formData, error_2;
+        var formData, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -121,11 +161,11 @@ var Create = function () {
                         })];
                 case 2:
                     _a.sent();
-                    router.push('/');
+                    router.push('./');
                     return [3 /*break*/, 4];
                 case 3:
-                    error_2 = _a.sent();
-                    console.error(error_2);
+                    error_3 = _a.sent();
+                    console.error(error_3);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -136,7 +176,7 @@ var Create = function () {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            Title
+            Name
           </label>
           <input type="text" name="title" id="title" required value={title} onChange={function (e) { return setTitle(e.target.value); }} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"/>
         </div>
@@ -153,7 +193,7 @@ var Create = function () {
         </div>
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-            Content
+            Descriptions
           </label>
           <textarea name="content" id="content" required rows={4} value={content} onChange={function (e) { return setContent(e.target.value); }} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
         </div>
