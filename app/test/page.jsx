@@ -68,18 +68,20 @@ var Posts = function () {
     }, []);
     return (<div>
       <h1>Posts</h1>
-      <ul>
-        {posts.map(function (post) { return (<li key={post.id}>
-            <h2>{post.title}</h2>
-            <img src={"".concat(post.imageUrl)} alt='image'></img>
-            <p>{post.content}</p>
-            <small>Category ID: {post.categoryId}</small>
-            <br />
-            <small>Created at: {new Date(post.createdAt).toLocaleString()}</small>
-            <br />
-            <small>Updated at: {new Date(post.updatedAt).toLocaleString()}</small>
-          </li>); })}
-      </ul>
+      {/* <ul>
+          {posts.map((post) => (
+            <li key={post.id}>
+              <h2>{post.title}</h2>
+              <img src={`${post.imageUrl}`} alt='image'></img>
+              <p>{post.content}</p>
+              <small>Category ID: {post.categoryId}</small>
+              <br />
+              <small>Created at: {new Date(post.createdAt).toLocaleString()}</small>
+              <br />
+              <small>Updated at: {new Date(post.updatedAt).toLocaleString()}</small>
+            </li>
+          ))}
+        </ul> */}
     </div>);
 };
 export default Posts;
