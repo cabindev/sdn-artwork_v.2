@@ -35,11 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { FaFacebook } from 'react-icons/fa';
+import { FaFacebook, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FacebookShareButton, } from 'react-share';
 import Head from 'next/head';
+import { Toaster, toast } from 'react-hot-toast';
 var PopupModal = function () {
     var _a = useState([]), posts = _a[0], setPosts = _a[1];
     var _b = useState([]), categories = _b[0], setCategories = _b[1];
@@ -159,6 +160,7 @@ var PopupModal = function () {
                 case 1:
                     _a.sent();
                     setCopySuccess('Link copied!');
+                    toast.success('Link copied to clipboard!');
                     setTimeout(function () {
                         setCopySuccess('');
                     }, 2000);
@@ -166,6 +168,7 @@ var PopupModal = function () {
                 case 2:
                     err_1 = _a.sent();
                     setCopySuccess('Failed to copy link');
+                    toast.error('Failed to copy link');
                     setTimeout(function () {
                         setCopySuccess('');
                     }, 2000);
@@ -174,9 +177,44 @@ var PopupModal = function () {
             }
         });
     }); };
+    var handleRatingChange = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, updatedPost, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, , 5]);
+                    return [4 /*yield*/, fetch("/api/posts/".concat(selectedPost === null || selectedPost === void 0 ? void 0 : selectedPost.id, "/rating"), {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ rating: 1 }),
+                        })];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) return [3 /*break*/, 3];
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    updatedPost = _a.sent();
+                    setSelectedPost(updatedPost);
+                    toast.success('Thank you for your rating!');
+                    _a.label = 3;
+                case 3: return [3 /*break*/, 5];
+                case 4:
+                    error_3 = _a.sent();
+                    console.error('Failed to update rating:', error_3);
+                    toast.error('Failed to update rating');
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); };
     return (<div className="max-w-7xl mx-auto px-4 py-8">
+      <Toaster />
       <div className="flex justify-between items-center mb-6">
         <input type="text" placeholder="Search images..." value={search} onChange={function (e) { return setSearch(e.target.value); }} className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"/>
+        <div className="stats stats-vertical lg:stats-horizontal shadow">
+    </div>
       </div>
 
       <div className="flex space-x-4 overflow-x-auto mb-6">
@@ -235,16 +273,13 @@ var PopupModal = function () {
                 <span className="text-gray-600 mb-2">
                   Views: {selectedPost.views}
                 </span>
-                <div className="w-full flex items-center justify-between">
-                  <span className="text-gray-600">
-                    Downloads: {selectedPost.downloads}
-                  </span>
-                  <a href="#" onClick={function () {
-                return handleDownload(selectedPost.zipUrl, selectedPost.id);
-            }} className="px-2 py-1 text-sm bg-green-400 text-white rounded-md">
-                    Download free
-                  </a>
-                </div>
+                <span className="text-gray-600">
+                  Ratings: {selectedPost.ratings}
+                </span>
+                <span className="text-gray-600">
+                  Downloads: {selectedPost.downloads}
+                </span>
+                <div className="w-full flex items-center justify-between"></div>
               </div>
 
               <div className="flex justify-start items-start space-x-2 mt-4">
@@ -254,6 +289,16 @@ var PopupModal = function () {
 
                 <button onClick={handleCopy} className="px-2 py-1 text-sm text-white bg-black rounded-md">
                   Copy Link
+                </button>
+              </div>
+              <div className="w-full flex items-center justify-end space-x-2">
+                <a href="#" onClick={function () {
+                return handleDownload(selectedPost.zipUrl, selectedPost.id);
+            }} className="px-4 py-2 text-sm bg-black text-white rounded-md">
+                  Download free
+                </a>
+                <button onClick={handleRatingChange} className="px-4 py-2 text-sm bg-black text-white rounded-md flex items-center justify-center">
+                  <FaHeart size={20}/>
                 </button>
               </div>
 

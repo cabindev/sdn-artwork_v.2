@@ -1,15 +1,16 @@
 'use client';
-import { FaRegCopy,FaFacebook } from 'react-icons/fa';
+import { FaRegCopy, FaFacebook, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   FacebookShareButton,
-  FacebookIcon,
   TwitterShareButton,
+  FacebookIcon,
   TwitterIcon,
 } from 'react-share';
 import Image from 'next/image';
 import Head from 'next/head';
+import { Toaster, toast } from 'react-hot-toast';
 
 interface Category {
   id: number;
@@ -24,6 +25,7 @@ interface Post {
   category: Category;
   views: number;
   downloads: number;
+  ratings: number;
 }
 
 const PopupModal = () => {
@@ -113,19 +115,43 @@ const PopupModal = () => {
     try {
       await navigator.clipboard.writeText(`${siteUrl}/posts/${selectedPost?.id}`);
       setCopySuccess('Link copied!');
+      toast.success('Link copied to clipboard!');
       setTimeout(() => {
         setCopySuccess('');
       }, 2000);
     } catch (err) {
       setCopySuccess('Failed to copy link');
+      toast.error('Failed to copy link');
       setTimeout(() => {
         setCopySuccess('');
       }, 2000);
     }
   };
 
+  const handleRatingChange = async () => {
+    try {
+      const response = await fetch(`/api/posts/${selectedPost?.id}/rating`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rating: 1 }),
+      });
+
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setSelectedPost(updatedPost);
+        toast.success('Thank you for your rating!');
+      }
+    } catch (error) {
+      console.error('Failed to update rating:', error);
+      toast.error('Failed to update rating');
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Toaster />
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
@@ -134,6 +160,8 @@ const PopupModal = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
+        <div className="stats stats-vertical lg:stats-horizontal shadow">
+</div>
       </div>
 
       <div className="flex space-x-4 overflow-x-auto mb-6">
@@ -246,20 +274,13 @@ const PopupModal = () => {
                 <span className="text-gray-600 mb-2">
                   Views: {selectedPost.views}
                 </span>
-                <div className="w-full flex items-center justify-between">
-                  <span className="text-gray-600">
-                    Downloads: {selectedPost.downloads}
-                  </span>
-                  <a
-                    href="#"
-                    onClick={() =>
-                      handleDownload(selectedPost.zipUrl, selectedPost.id)
-                    }
-                    className="px-2 py-1 text-sm bg-green-400 text-white rounded-md"
-                  >
-                    Download free
-                  </a>
-                </div>
+                <span className="text-gray-600">
+                  Ratings: {selectedPost.ratings}
+                </span>
+                <span className="text-gray-600">
+                  Downloads: {selectedPost.downloads}
+                </span>
+                <div className="w-full flex items-center justify-between"></div>
               </div>
 
               <div className="flex justify-start items-start space-x-2 mt-4">
@@ -275,6 +296,23 @@ const PopupModal = () => {
                   className="px-2 py-1 text-sm text-white bg-black rounded-md"
                 >
                   Copy Link
+                </button>
+              </div>
+              <div className="w-full flex items-center justify-end space-x-2">
+                <a
+                  href="#"
+                  onClick={() =>
+                    handleDownload(selectedPost.zipUrl, selectedPost.id)
+                  }
+                  className="px-4 py-2 text-sm bg-black text-white rounded-md"
+                >
+                  Download free
+                </a>
+                <button
+                  onClick={handleRatingChange}
+                  className="px-4 py-2 text-sm bg-black text-white rounded-md flex items-center justify-center"
+                >
+                  <FaHeart size={20} />
                 </button>
               </div>
 

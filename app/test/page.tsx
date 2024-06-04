@@ -8,6 +8,7 @@ interface Post {
     categoryId: number;
     createdAt: string;
     updatedAt: string;
+    ratings: string;
   }
   
   interface ApiResponse {
@@ -38,10 +39,11 @@ const Posts: React.FC = () => {
   return (
     <div>
       <h1>Posts</h1>
-      {/* <ul>
+      <ul>
         {posts.map((post) => (
           <li key={post.id}>
             <h2>{post.title}</h2>
+            <h2>{post.ratings}</h2>
             <img src={`${post.imageUrl}`} alt='image'></img>
             <p>{post.content}</p>
             <small>Category ID: {post.categoryId}</small>
@@ -51,7 +53,7 @@ const Posts: React.FC = () => {
             <small>Updated at: {new Date(post.updatedAt).toLocaleString()}</small>
           </li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 };
