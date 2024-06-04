@@ -13,7 +13,7 @@ export async function POST(
     const post = await prisma.post.findUnique({
       where: { id: Number(params.id) },
     });
-
+    
     if (post) {
       const updatedPost = await prisma.post.update({
         where: { id: Number(params.id) },

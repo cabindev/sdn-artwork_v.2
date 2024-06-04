@@ -1,3 +1,4 @@
+// modal/page.tsx
 'use client';
 import { FaRegCopy, FaFacebook, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
@@ -11,6 +12,7 @@ import {
 import Image from 'next/image';
 import Head from 'next/head';
 import { Toaster, toast } from 'react-hot-toast';
+import Stats from '../stats/page';
 
 interface Category {
   id: number;
@@ -152,18 +154,17 @@ const PopupModal = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
+      <Stats />
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
           placeholder="Search images..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        <div className="stats stats-vertical lg:stats-horizontal shadow">
-</div>
+        <div className="stats stats-vertical lg:stats-horizontal shadow"></div>
       </div>
-
       <div className="flex space-x-4 overflow-x-auto mb-6">
         {categories.map((category) => (
           <button
