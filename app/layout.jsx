@@ -22,6 +22,7 @@ export var metadata = {
 export default function RootLayout(_a) {
     var children = _a.children;
     return (<html lang="en">
+
       <body className={inter.className}>
         <Navbar />
         {children}
