@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ThemeToggle from "./components/themes";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 
@@ -35,7 +34,6 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-
       <body className={inter.className}>
         <Navbar/>
         {children}
