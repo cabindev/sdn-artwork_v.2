@@ -25,7 +25,9 @@ model Post {
   zipUrl     String?
   views      Int      @default(0)
   downloads  Int      @default(0)
+  ratings    Int      @default(0) // จำนวนการให้คะแนน
 }
+
 
 model Category {
   id    Int    @id @default(autoincrement())
