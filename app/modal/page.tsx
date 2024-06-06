@@ -188,11 +188,18 @@ const PopupModal = () => {
             className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl"
             onClick={() => openModal(post)}
           >
-            <img
+             <Image
+                src={`${siteUrl}${post.imageUrl}`}
+                width={500}
+                height={500}
+                alt={post.title}
+                className="object-cover w-full h-full rounded-md"
+              />
+            {/* <img
               src={`https://app-info.healthypublicspaces.com/${post.imageUrl}`}
               alt={post.title}
               className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
-            />
+            /> */}
           </div>
         ))}
       </div>
@@ -264,11 +271,18 @@ const PopupModal = () => {
                 </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-                <img
+              <Image
+                src={`${siteUrl}${selectedPost.imageUrl}`}
+                width={500}
+                height={500}
+                alt={selectedPost.title}
+                className="object-cover w-full h-full rounded-md"
+              />
+                {/* <img
                   src={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
                   className="object-contain w-full h-full max-h-96"
-                />
+                /> */}
               </div>
 
               <div className="text-left w-full flex flex-col items-start">
