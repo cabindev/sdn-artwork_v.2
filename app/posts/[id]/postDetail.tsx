@@ -18,32 +18,44 @@ interface Post {
   id: number;
   title: string;
   imageUrl: string;
-  category: Category;
+  categoryId: number;
+  category?: Category;
 }
 
 const PostDetail = ({ params }: { params: { id: string } }) => {
   const [post, setPost] = useState<Post | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const { id } = params;
   const siteUrl = 'https://app-info.healthypublicspaces.com';
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await axios.get(`/api/posts/${id}`);
-        setPost(res.data);
+        const postResponse = await axios.get(`/api/posts/${id}`);
+        setPost(postResponse.data);
       } catch (error) {
         console.error('Failed to fetch post', error);
       }
     };
 
-    if (id) {
-      fetchPost();
-    }
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get<Category[]>('/api/categories');
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Failed to fetch categories', error);
+      }
+    };
+
+    fetchPost();
+    fetchCategories();
   }, [id]);
 
   if (!post) {
     return <div>Loading...</div>;
   }
+
+  const postCategory = categories.find(category => category.id === post.categoryId);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -55,7 +67,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="mb-4">
         <span className="block text-sm font-medium text-gray-700">Category:</span>
-        <span className="block text-lg">{post.category?.name || 'No Category'}</span>
+        <span className="block text-lg">{postCategory?.name || 'No Category'}</span>
       </div>
       <div className="flex space-x-2 mt-4">
         <FacebookShareButton url={`${siteUrl}/posts/${post.id}`} title={post.title}>
