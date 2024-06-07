@@ -222,7 +222,6 @@ const PopupModal = () => {
           Next
         </button>
       </div>
-
       {modalIsOpen && selectedPost && (
         <>
           <Head>
@@ -242,7 +241,6 @@ const PopupModal = () => {
             />
             <meta property="og:type" content="article" />
           </Head>
-
           <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             onClick={closeModal}
