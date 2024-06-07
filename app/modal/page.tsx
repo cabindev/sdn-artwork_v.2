@@ -188,7 +188,7 @@ const PopupModal = () => {
             className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl"
             onClick={() => openModal(post)}
           >
-             {/* <Image
+            {/* <Image
                 src={`${siteUrl}${post.imageUrl}`}
                 width={500}
                 height={500}
@@ -271,7 +271,7 @@ const PopupModal = () => {
                 </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-              {/* <Image
+                {/* <Image
                 src={`${siteUrl}${selectedPost.imageUrl}`}
                 width={500}
                 height={500}
@@ -284,7 +284,6 @@ const PopupModal = () => {
                   className="object-contain w-full h-full max-h-96"
                 />
               </div>
-
               <div className="text-left w-full flex flex-col items-start">
                 <span className="text-gray-600 mb-2">
                   Views: {selectedPost.views}
@@ -295,37 +294,33 @@ const PopupModal = () => {
                 <span className="text-gray-600">
                   Downloads: {selectedPost.downloads}
                 </span>
-                <div className="w-full flex items-center justify-between"></div>
               </div>
-
-              <div className="flex justify-start items-start space-x-2 mt-4">
+              <div className="flex flex-wrap justify-center items-center mt-4 space-x-2">
                 <FacebookShareButton
                   url={`${siteUrl}/posts/${selectedPost.id}`}
                   title={selectedPost.title}
+                  className="w-auto"
                 >
-                  <FaFacebook size={32} color="black" />
+                  <FaFacebook size={30} color="black" />
                 </FacebookShareButton>
-
                 <button
                   onClick={handleCopy}
                   className="px-2 py-1 text-sm text-white bg-black rounded-md"
                 >
                   Copy Link
                 </button>
-              </div>
-              <div className="w-full flex items-center justify-end space-x-2">
                 <a
                   href="#"
                   onClick={() =>
                     handleDownload(selectedPost.zipUrl, selectedPost.id)
                   }
-                  className="px-4 py-2 text-sm bg-black text-white rounded-md"
+                  className="px-2 py-1 text-sm bg-black text-white rounded-md"
                 >
                   Download free
                 </a>
                 <button
                   onClick={handleRatingChange}
-                  className="px-4 py-2 text-sm bg-black text-white rounded-md flex items-center justify-center"
+                  className="px-2 py-1 text-sm bg-black text-white rounded-md flex items-center justify-center"
                 >
                   <FaHeart size={20} />
                 </button>
@@ -348,5 +343,4 @@ const PopupModal = () => {
     </div>
   );
 };
-
 export default PopupModal;
