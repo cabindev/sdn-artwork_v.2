@@ -247,7 +247,7 @@ const PopupModal = () => {
           >
             <button
               onClick={prevPost}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
+              className="absolute left-20 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
               style={{ padding: "1rem" }}
             >
               &#8249;
@@ -293,20 +293,23 @@ const PopupModal = () => {
                   Downloads: {selectedPost.downloads}
                 </span>
               </div>
+
               <div className="flex flex-wrap justify-center items-center mt-4 space-x-2">
                 <FacebookShareButton
                   url={`${siteUrl}/posts/${selectedPost.id}`}
                   title={selectedPost.title}
                   className="w-auto"
                 >
-                  <FaFacebook size={30} color="black" />
+                  <FaFacebook size={24} color="black" />
                 </FacebookShareButton>
+
                 <button
                   onClick={handleCopy}
                   className="px-2 py-1 text-sm text-white bg-black rounded-md"
                 >
                   Copy Link
                 </button>
+
                 <a
                   href="#"
                   onClick={() =>
@@ -316,6 +319,7 @@ const PopupModal = () => {
                 >
                   Download free
                 </a>
+
                 <button
                   onClick={handleRatingChange}
                   className="px-2 py-1 text-sm bg-black text-white rounded-md flex items-center justify-center"
@@ -330,7 +334,7 @@ const PopupModal = () => {
             </div>
             <button
               onClick={nextPost}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
+              className="absolute right-20 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
               style={{ padding: "1rem" }}
             >
               &#8250;
