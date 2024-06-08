@@ -247,7 +247,7 @@ const PopupModal = () => {
           >
             <button
               onClick={prevPost}
-              className="absolute left-20 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
               style={{ padding: "1rem" }}
             >
               &#8249;
@@ -334,7 +334,7 @@ const PopupModal = () => {
             </div>
             <button
               onClick={nextPost}
-              className="absolute right-20 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
               style={{ padding: "1rem" }}
             >
               &#8250;
