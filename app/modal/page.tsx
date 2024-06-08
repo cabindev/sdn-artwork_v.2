@@ -41,7 +41,7 @@ const PopupModal = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [copySuccess, setCopySuccess] = useState<string>('');
 
-  const siteUrl = 'https://app-info.healthypublicspaces.com';
+  const siteUrl = 'https://sdn-workspaces.sdnthailand.com';
 
   useEffect(() => {
     fetchCategories();
@@ -196,7 +196,7 @@ const PopupModal = () => {
                 className="object-cover w-full h-full rounded-md"
               /> */}
             <img
-              src={`https://sdn-workspaces.vercel.app/${post.imageUrl}`}
+              src={`https://sdn-workspaces.sdnthailand.com/${post.imageUrl}`}
               alt={post.title}
               className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
             />
@@ -233,7 +233,7 @@ const PopupModal = () => {
             />
             <meta
               property="og:image"
-              content={`https://app-info.healthypublicspaces.com/${selectedPost.imageUrl}`}
+              content={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
             />
             <meta
               property="og:url"
@@ -277,7 +277,7 @@ const PopupModal = () => {
                 className="object-cover w-full h-full rounded-md"
               /> */}
                 <img
-                  src={`https://sdn-workspaces.vercel.app/${selectedPost.imageUrl}`}
+                  src={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
                   className="object-contain w-full h-full max-h-96"
                 />

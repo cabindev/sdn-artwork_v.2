@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'app-info.healthypublicspaces.com',
+        hostname: 'sdn-workspaces.sdnthailand.com',
         port: '',
         pathname: '/images/**',
       },

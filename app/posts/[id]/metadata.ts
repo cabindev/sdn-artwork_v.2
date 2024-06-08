@@ -22,7 +22,7 @@ interface Params {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata | undefined> {
   try {
-    const res = await axios.get<Post>(`https://app-info.healthypublicspaces.com/api/posts/${params.id}`);
+    const res = await axios.get<Post>(`https://sdn-workspaces.sdnthailand.com/api/posts/${params.id}`);
     const post = res.data;
 
     if (!post) {
@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata | u
         description: post.description,
         type: "article",
         locale: "en_US",
-        url: `https://app-info.healthypublicspaces.com/posts/${params.id}`,
+        url: `https://sdn-workspaces.sdnthailand.com/posts/${params.id}`,
         siteName: "sdn-workspace",
         images: [
           {
-            url: `https://app-info.healthypublicspaces.com${post.imageUrl}`,
+            url: `https://sdn-workspaces.sdnthailand.com${post.imageUrl}`,
             width: 1200,
             height: 630,
           },

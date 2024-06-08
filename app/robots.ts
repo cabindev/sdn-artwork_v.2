@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/studio',
     },
-    sitemap: 'https://app-info.healthypublicspaces.com/sitemap.xml',
+    sitemap: 'https://sdn-workspaces.sdnthailand.com/sitemap.xml',
   }
 }

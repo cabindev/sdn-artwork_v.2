@@ -11,7 +11,7 @@ import Footer from "./components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app-info.healthypublicspaces.com/"),
+  metadataBase: new URL("https://sdn-workspaces.sdnthailand.com/"),
   title: {
     default: "Workspaces | sdnthailand",
     template: '%s | Workspaces | sdnthailand'
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description: "Workspaces | sdnthailand SDN-Workspaces",
     type: "website",
     locale: "en_US",
-    url: "https://app-info.healthypublicspaces.com",
+    url: "https://sdn-workspaces.sdnthailand.com",
     siteName: "SDN-Workspaces"
   },
 };

@@ -24,17 +24,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts: Post[] = await getPosts();
 
   const postUrls = posts.map((post) => ({
-    url: `https://app-info.healthypublicspaces.com/posts/${post.id}`,
+    url: `https://sdn-workspaces.sdnthailand.com/posts/${post.id}`,
     lastModified: post.publishedAt,
   }));
 
   return [
     {
-      url: `https://app-info.healthypublicspaces.com/`,
+      url: `https://sdn-workspaces.sdnthailand.com/`,
       lastModified: new Date(),
     },
     {
-      url: "https://app-info.healthypublicspaces.com/tag",
+      url: "https://sdn-workspaces.sdnthailand.com/tag",
       lastModified: new Date(),
     },
     ...postUrls,

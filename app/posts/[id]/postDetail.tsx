@@ -26,7 +26,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
   const [post, setPost] = useState<Post | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const { id } = params;
-  const siteUrl = 'https://app-info.healthypublicspaces.com';
+  const siteUrl = 'https://sdn-workspaces.sdnthailand.com';
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -62,7 +62,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
       <h1 className="text-2xl font-semibold mb-6">{post.title}</h1>
       <div className="mb-4">
         {post.imageUrl && (
-          <img src={`https://app-info.healthypublicspaces.com/${post.imageUrl}`} alt="Post Image" className="w-full h-auto rounded-md" />
+          <img src={`https://sdn-workspaces.sdnthailand.com/${post.imageUrl}`} alt="Post Image" className="w-full h-auto rounded-md" />
         )}
       </div>
       <div className="mb-4">
