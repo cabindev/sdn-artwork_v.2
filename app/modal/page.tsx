@@ -13,7 +13,6 @@ import Image from 'next/image';
 import Head from 'next/head';
 import { Toaster, toast } from 'react-hot-toast';
 import Stats from '../stats/page';
-import Stats1 from '../components/stats';
 
 interface Category {
   id: number;
@@ -156,7 +155,6 @@ const PopupModal = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
       <Stats />
-      <Stats1/>
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"

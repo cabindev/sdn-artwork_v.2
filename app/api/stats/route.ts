@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse ,NextRequest } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,7 @@ export const GET = async (request: NextRequest) => {
         downloads: true,    
       },
     });
+    revalidatePath('/');
     return NextResponse.json(topRatedPosts);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch top rated posts' }, { status: 500 });
