@@ -1,4 +1,5 @@
-// modal/page.tsx
+// app/modal/page.tsx
+
 'use client';
 import { FaRegCopy, FaFacebook, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
@@ -6,13 +7,11 @@ import axios from 'axios';
 import {
   FacebookShareButton,
   TwitterShareButton,
-  FacebookIcon,
-  TwitterIcon,
 } from 'react-share';
 import Image from 'next/image';
 import Head from 'next/head';
 import { Toaster, toast } from 'react-hot-toast';
-import Stats from '../stats/page';
+import Stats from '../stats/page'; // ตรวจสอบการนำเข้าของ Stats
 
 interface Category {
   id: number;
@@ -40,6 +39,7 @@ const PopupModal = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [copySuccess, setCopySuccess] = useState<string>('');
+  const [changing, setChanging] = useState<boolean>(false);
 
   const siteUrl = 'https://sdn-workspaces.sdnthailand.com';
 
@@ -131,6 +131,7 @@ const PopupModal = () => {
   };
 
   const handleRatingChange = async () => {
+    setChanging(true);
     try {
       const response = await fetch(`/api/posts/${selectedPost?.id}/rating`, {
         method: 'POST',
@@ -148,13 +149,15 @@ const PopupModal = () => {
     } catch (error) {
       console.error('Failed to update rating:', error);
       toast.error('Failed to update rating');
+    } finally {
+      setChanging(false);
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
-      <Stats />
+      <Stats changing={changing} setChanging={setChanging} />
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
@@ -188,13 +191,6 @@ const PopupModal = () => {
             className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl"
             onClick={() => openModal(post)}
           >
-            {/* <Image
-                src={`${siteUrl}${post.imageUrl}`}
-                width={500}
-                height={500}
-                alt={post.title}
-                className="object-cover w-full h-full rounded-md"
-              /> */}
             <img
               src={`https://sdn-workspaces.sdnthailand.com/${post.imageUrl}`}
               alt={post.title}
@@ -269,13 +265,6 @@ const PopupModal = () => {
                 </h2>
               </div>
               <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
-                {/* <Image
-                src={`${siteUrl}${selectedPost.imageUrl}`}
-                width={500}
-                height={500}
-                alt={selectedPost.title}
-                className="object-cover w-full h-full rounded-md"
-              /> */}
                 <img
                   src={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
@@ -321,7 +310,7 @@ const PopupModal = () => {
                 </a>
 
                 <button
-                  onClick={handleRatingChange}
+                  onClick={changing ? () => {} : handleRatingChange}
                   className="px-2 py-1 text-sm bg-black text-white rounded-md flex items-center justify-center"
                 >
                   <FaHeart size={20} />
@@ -345,4 +334,5 @@ const PopupModal = () => {
     </div>
   );
 };
+
 export default PopupModal;
