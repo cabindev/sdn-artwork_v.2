@@ -4,7 +4,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": false,  // เปลี่ยนค่าเป็น false เพื่อให้เกิดการคอมไพล์
+    "noEmit": true,  // ตั้งเป็น true หากไม่ต้องการสร้างไฟล์ .js, ตั้งเป็น false หากต้องการสร้างไฟล์ .js
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",

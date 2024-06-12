@@ -1,5 +1,4 @@
 // app/modal/page.tsx
-
 'use client';
 import { FaRegCopy, FaFacebook, FaHeart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
@@ -11,7 +10,10 @@ import {
 import Image from 'next/image';
 import Head from 'next/head';
 import { Toaster, toast } from 'react-hot-toast';
-import Stats from '../stats/page'; // ตรวจสอบการนำเข้าของ Stats
+import Rated from '../components/reted';
+
+
+
 
 interface Category {
   id: number;
@@ -144,6 +146,14 @@ const PopupModal = () => {
       if (response.ok) {
         const updatedPost = await response.json();
         setSelectedPost(updatedPost);
+
+        // Update the rating in the Rated component
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === updatedPost.id ? { ...post, ratings: updatedPost.ratings } : post
+          )
+        );
+
         toast.success('Thank you for your rating!');
       }
     } catch (error) {
@@ -154,10 +164,12 @@ const PopupModal = () => {
     }
   };
 
+  const topRatedPosts: Post[] = [...posts].sort((a, b) => b.ratings - a.ratings).slice(0, 5);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
-      <Stats changing={changing} setChanging={setChanging} />
+      <Rated posts={topRatedPosts} />
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
