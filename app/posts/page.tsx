@@ -86,7 +86,7 @@ export default function ListPost (){
         <div className="flex flex-wrap gap-4 w-full sm:w-auto">
           <input
             type="text"
-            placeholder="Search by title...."
+            placeholder="Search by title..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto"
