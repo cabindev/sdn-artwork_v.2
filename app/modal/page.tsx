@@ -170,25 +170,50 @@ const PopupModal = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
       <Rated posts={topRatedPosts} />
-      <div className="flex justify-between items-center mb-6">
-        <input
-          type="text"
-          placeholder="Search images..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <div className="stats stats-vertical lg:stats-horizontal shadow"></div>
+
+      {/* Search Bar */}
+      <div className="mb-6">
+        <div className="relative max-w-xl mx-auto">
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search artwork..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 rounded-full border border-base-300 bg-base-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-transparent transition-all"
+          />
+        </div>
       </div>
-      <div className="flex space-x-4 overflow-x-auto mb-6">
+
+      {/* Category Buttons */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          onClick={() => setSelectedCategory('')}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+            selectedCategory === ''
+              ? "bg-black text-white shadow-md"
+              : "bg-base-200 hover:bg-base-300"
+          }`}
+        >
+          All
+        </button>
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
-            className={`px-2 py-1 rounded-md text-xs md:text-sm ${
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
               selectedCategory === category.name
-                ? "bg-black text-white"
-                : "bg-gray-200"
+                ? "bg-black text-white shadow-md"
+                : "bg-base-200 hover:bg-base-300"
             }`}
           >
             {category.name}
@@ -196,40 +221,87 @@ const PopupModal = () => {
         ))}
       </div>
 
+      {/* Masonry Grid */}
       <div className="masonry-grid">
         {posts.map((post) => (
           <div
             key={post.id}
-            className="masonry-item relative transition-shadow duration-300 ease-in-out hover:shadow-2xl"
+            className="masonry-item group relative cursor-pointer overflow-hidden rounded-xl"
             onClick={() => openModal(post)}
           >
             <img
               src={`https://sdn-workspaces.sdnthailand.com/${post.imageUrl}`}
               alt={post.title}
-              className="object-cover w-full h-full rounded-md bg-base-100 shadow-xl"
+              className="object-cover w-full h-full rounded-xl bg-base-100 shadow-md transition-transform duration-300 group-hover:scale-105"
             />
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-end p-4">
+              <div>
+                <p className="text-white font-semibold text-sm truncate">{post.title}</p>
+                <p className="text-white/70 text-xs">{post.category?.name}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-8">
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center gap-2 mt-10">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-2 py-1 mx-2 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-base-200 hover:bg-base-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          Previous
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+          Prev
         </button>
-        <span className="px-4 py-2">
-          Page {currentPage} of {totalPages}
-        </span>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1)
+          .filter((page) => {
+            if (totalPages <= 5) return true;
+            if (page === 1 || page === totalPages) return true;
+            return Math.abs(page - currentPage) <= 1;
+          })
+          .reduce<(number | string)[]>((acc, page, idx, arr) => {
+            if (idx > 0 && typeof arr[idx - 1] === 'number' && (page as number) - (arr[idx - 1] as number) > 1) {
+              acc.push('...');
+            }
+            acc.push(page);
+            return acc;
+          }, [])
+          .map((item, idx) =>
+            typeof item === 'string' ? (
+              <span key={`dots-${idx}`} className="px-2 py-2 text-sm opacity-50">...</span>
+            ) : (
+              <button
+                key={item}
+                onClick={() => handlePageChange(item as number)}
+                className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  currentPage === item
+                    ? "bg-black text-white shadow-md"
+                    : "bg-base-200 hover:bg-base-300"
+                }`}
+              >
+                {item}
+              </button>
+            )
+          )}
+
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-2 py-1 rounded-md text-xs md:text-sm bg-gray-200 disabled:opacity-50"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-base-200 hover:bg-base-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           Next
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 inline ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
         </button>
       </div>
+
+      {/* Modal */}
       {modalIsOpen && selectedPost && (
         <>
           <Head>
@@ -250,93 +322,114 @@ const PopupModal = () => {
             <meta property="og:type" content="article" />
           </Head>
           <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
             onClick={closeModal}
           >
+            {/* Prev Button */}
             <button
               onClick={prevPost}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: "1rem" }}
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white text-2xl flex items-center justify-center transition-colors z-50"
             >
               &#8249;
             </button>
+
+            {/* Modal Content */}
             <div
-              className="relative bg-white/90 p-4 rounded-lg w-full max-w-5xl mx-auto flex flex-col items-center"
+              className="relative bg-base-100 rounded-2xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Close Button */}
               <button
                 onClick={closeModal}
-                className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 text-4xl"
-                style={{ padding: "1rem" }}
+                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-base-200 hover:bg-base-300 flex items-center justify-center text-lg z-10 transition-colors"
               >
                 &times;
               </button>
-              <div className="flex justify-between items-center mb-4 w-full">
-                <h2 className="text-2xl font-semibold text-center w-full">
-                  {selectedPost.title}
-                </h2>
-              </div>
-              <div className="aspect-w-1 aspect-h-1 mb-4 flex items-center justify-center w-full">
+
+              {/* Image */}
+              <div className="flex items-center justify-center bg-base-200 rounded-t-2xl">
                 <img
                   src={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
-                  className="object-contain w-full h-full max-h-96"
+                  className="object-contain w-full max-h-[50vh]"
                 />
               </div>
-              <div className="text-left w-full flex flex-col items-start">
-                <span className="text-gray-600 mb-2">
-                  Views: {selectedPost.views}
-                </span>
-                <span className="text-gray-600">
-                  Ratings: {selectedPost.ratings}
-                </span>
-                <span className="text-gray-600">
-                  Downloads: {selectedPost.downloads}
-                </span>
+
+              {/* Info */}
+              <div className="p-6">
+                <h2 className="text-xl font-bold mb-3">
+                  {selectedPost.title}
+                </h2>
+
+                <div className="flex flex-wrap gap-4 text-sm opacity-60 mb-5">
+                  <span className="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    {selectedPost.views}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                    {selectedPost.ratings}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    {selectedPost.downloads}
+                  </span>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href="#"
+                    onClick={() =>
+                      handleDownload(selectedPost.zipUrl, selectedPost.id)
+                    }
+                    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-black text-white rounded-lg hover:bg-gray-800 transition-all"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    Download
+                  </a>
+
+                  <button
+                    onClick={handleCopy}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-base-200 hover:bg-base-300 rounded-lg transition-colors"
+                  >
+                    <FaRegCopy size={14} />
+                    Copy Link
+                  </button>
+
+                  <FacebookShareButton
+                    url={`${siteUrl}/posts/${selectedPost.id}`}
+                    title={selectedPost.title}
+                  >
+                    <span className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-base-200 hover:bg-base-300 rounded-lg transition-colors">
+                      <FaFacebook size={16} />
+                      Share
+                    </span>
+                  </FacebookShareButton>
+
+                  <button
+                    onClick={changing ? () => {} : handleRatingChange}
+                    className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                      changing
+                        ? 'bg-base-200 opacity-50 cursor-not-allowed'
+                        : 'bg-base-200 hover:bg-red-100 hover:text-red-500'
+                    }`}
+                  >
+                    <FaHeart size={14} />
+                    Like
+                  </button>
+                </div>
+
+                {copySuccess && (
+                  <div className="mt-3 text-sm text-green-600">{copySuccess}</div>
+                )}
               </div>
-
-              <div className="flex flex-wrap justify-center items-center mt-4 space-x-2">
-                <FacebookShareButton
-                  url={`${siteUrl}/posts/${selectedPost.id}`}
-                  title={selectedPost.title}
-                  className="w-auto"
-                >
-                  <FaFacebook size={24} color="black" />
-                </FacebookShareButton>
-
-                <button
-                  onClick={handleCopy}
-                  className="px-2 py-1 text-sm text-white bg-black rounded-md"
-                >
-                  Copy Link
-                </button>
-
-                <a
-                  href="#"
-                  onClick={() =>
-                    handleDownload(selectedPost.zipUrl, selectedPost.id)
-                  }
-                  className="px-2 py-1 text-sm bg-black text-white rounded-md"
-                >
-                  Download free
-                </a>
-
-                <button
-                  onClick={changing ? () => {} : handleRatingChange}
-                  className="px-2 py-1 text-sm bg-black text-white rounded-md flex items-center justify-center"
-                >
-                  <FaHeart size={20} />
-                </button>
-              </div>
-
-              {copySuccess && (
-                <div className="mt-2 text-green-600">{copySuccess}</div>
-              )}
             </div>
+
+            {/* Next Button */}
             <button
               onClick={nextPost}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl z-50"
-              style={{ padding: "1rem" }}
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white text-2xl flex items-center justify-center transition-colors z-50"
             >
               &#8250;
             </button>

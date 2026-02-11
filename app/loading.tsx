@@ -1,7 +1,8 @@
 
 export default function Loading() {
   return (
-    <span className="loading loading-dots loading-lg"></span>
+    <div className="flex items-center justify-center min-h-screen">
+      <span className="loading loading-dots loading-lg"></span>
+    </div>
   )
 }
-

@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-dynamic";
+
 const prisma = new PrismaClient();
 
 interface Post {
@@ -14,8 +16,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const posts = await prisma.post.findMany({
       select: {
         id: true,
-     
-
       },
     });
     return posts as Post[];
