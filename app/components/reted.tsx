@@ -24,10 +24,10 @@ export default function Rated({ posts } : Props){
         {posts.map((post, index) => (
           <div
             key={post.id}
-            className="relative overflow-hidden rounded-xl bg-base-200 p-4 border border-base-300 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+            className="relative glass-thin rounded-2xl p-4 transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-bold bg-black text-white rounded-full w-6 h-6 flex items-center justify-center">
+              <span className="text-xs font-bold glass-active rounded-full w-6 h-6 flex items-center justify-center">
                 {index + 1}
               </span>
               <span className="text-sm font-medium truncate">{post.title}</span>
@@ -35,7 +35,7 @@ export default function Rated({ posts } : Props){
             <div className="text-3xl font-bold">
               {post.ratings}
             </div>
-            <div className="text-xs opacity-60 mt-1">Ratings</div>
+            <div className="text-xs opacity-50 mt-1">Ratings</div>
           </div>
         ))}
       </div>

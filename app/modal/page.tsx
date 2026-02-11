@@ -171,7 +171,7 @@ const PopupModal = () => {
       <Toaster />
       <Rated posts={topRatedPosts} />
 
-      {/* Search Bar */}
+      {/* Search Bar — Liquid Glass */}
       <div className="mb-6">
         <div className="relative max-w-xl mx-auto">
           <svg
@@ -189,19 +189,19 @@ const PopupModal = () => {
             placeholder="Search artwork..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-full border border-base-300 bg-base-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-transparent transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-2xl glass-thin focus:outline-none focus:ring-2 focus:ring-black/10 transition-all placeholder:opacity-40"
           />
         </div>
       </div>
 
-      {/* Category Buttons */}
+      {/* Category Pills — Liquid Glass */}
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setSelectedCategory('')}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
             selectedCategory === ''
-              ? "bg-black text-white shadow-md"
-              : "bg-base-200 hover:bg-base-300"
+              ? "glass-active"
+              : "glass-thin hover:scale-105"
           }`}
         >
           All
@@ -210,10 +210,10 @@ const PopupModal = () => {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
               selectedCategory === category.name
-                ? "bg-black text-white shadow-md"
-                : "bg-base-200 hover:bg-base-300"
+                ? "glass-active"
+                : "glass-thin hover:scale-105"
             }`}
           >
             {category.name}
@@ -226,31 +226,31 @@ const PopupModal = () => {
         {posts.map((post) => (
           <div
             key={post.id}
-            className="masonry-item group relative cursor-pointer overflow-hidden rounded-xl"
+            className="masonry-item group relative cursor-pointer overflow-hidden rounded-2xl"
             onClick={() => openModal(post)}
           >
             <img
               src={`https://sdn-workspaces.sdnthailand.com/${post.imageUrl}`}
               alt={post.title}
-              className="object-cover w-full h-full rounded-xl bg-base-100 shadow-md transition-transform duration-300 group-hover:scale-105"
+              className="object-cover w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-105"
             />
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl flex items-end p-4">
-              <div>
-                <p className="text-white font-semibold text-sm truncate">{post.title}</p>
-                <p className="text-white/70 text-xs">{post.category?.name}</p>
+            {/* Hover Overlay — Glass bottom bar */}
+            <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+              <div className="glass m-2 rounded-xl px-3 py-2">
+                <p className="font-medium text-sm truncate">{post.title}</p>
+                <p className="text-xs opacity-50">{post.category?.name}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* Pagination — Liquid Glass */}
       <div className="flex justify-center items-center gap-2 mt-10">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 rounded-lg text-sm font-medium bg-base-200 hover:bg-base-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="glass-thin px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -273,15 +273,15 @@ const PopupModal = () => {
           }, [])
           .map((item, idx) =>
             typeof item === 'string' ? (
-              <span key={`dots-${idx}`} className="px-2 py-2 text-sm opacity-50">...</span>
+              <span key={`dots-${idx}`} className="px-2 py-2 text-sm opacity-40">...</span>
             ) : (
               <button
                 key={item}
                 onClick={() => handlePageChange(item as number)}
-                className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`w-10 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
                   currentPage === item
-                    ? "bg-black text-white shadow-md"
-                    : "bg-base-200 hover:bg-base-300"
+                    ? "glass-active"
+                    : "glass-thin hover:scale-105"
                 }`}
               >
                 {item}
@@ -292,7 +292,7 @@ const PopupModal = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 rounded-lg text-sm font-medium bg-base-200 hover:bg-base-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="glass-thin px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200"
         >
           Next
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 inline ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -301,53 +301,45 @@ const PopupModal = () => {
         </button>
       </div>
 
-      {/* Modal */}
+      {/* Modal — Liquid Glass */}
       {modalIsOpen && selectedPost && (
         <>
           <Head>
             <title>{selectedPost.title}</title>
             <meta property="og:title" content={selectedPost.title} />
-            <meta
-              property="og:description"
-              content="Description of your post"
-            />
-            <meta
-              property="og:image"
-              content={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
-            />
-            <meta
-              property="og:url"
-              content={`${siteUrl}/posts/${selectedPost.id}`}
-            />
+            <meta property="og:description" content="Description of your post" />
+            <meta property="og:image" content={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`} />
+            <meta property="og:url" content={`${siteUrl}/posts/${selectedPost.id}`} />
             <meta property="og:type" content="article" />
           </Head>
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{ backdropFilter: 'blur(32px) saturate(180%)', WebkitBackdropFilter: 'blur(32px) saturate(180%)', backgroundColor: 'rgba(0,0,0,0.3)' }}
             onClick={closeModal}
           >
             {/* Prev Button */}
             <button
               onClick={prevPost}
-              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white text-2xl flex items-center justify-center transition-colors z-50"
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 glass-thin w-10 h-10 rounded-full text-xl flex items-center justify-center hover:scale-110 transition-transform z-50"
             >
               &#8249;
             </button>
 
             {/* Modal Content */}
             <div
-              className="relative bg-base-100 rounded-2xl shadow-2xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto"
+              className="relative glass-strong rounded-3xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}
               <button
                 onClick={closeModal}
-                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-base-200 hover:bg-base-300 flex items-center justify-center text-lg z-10 transition-colors"
+                className="absolute top-3 right-3 glass-thin w-8 h-8 rounded-full flex items-center justify-center text-lg z-10 hover:scale-110 transition-transform"
               >
                 &times;
               </button>
 
               {/* Image */}
-              <div className="flex items-center justify-center bg-base-200 rounded-t-2xl">
+              <div className="flex items-center justify-center rounded-t-3xl overflow-hidden">
                 <img
                   src={`https://sdn-workspaces.sdnthailand.com/${selectedPost.imageUrl}`}
                   alt={selectedPost.title}
@@ -361,29 +353,28 @@ const PopupModal = () => {
                   {selectedPost.title}
                 </h2>
 
-                <div className="flex flex-wrap gap-4 text-sm opacity-60 mb-5">
-                  <span className="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                {/* Stats — glass pills */}
+                <div className="flex flex-wrap gap-3 mb-5">
+                  <span className="glass-thin rounded-full px-3 py-1 text-sm flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                     {selectedPost.views}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                  <span className="glass-thin rounded-full px-3 py-1 text-sm flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
                     {selectedPost.ratings}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                  <span className="glass-thin rounded-full px-3 py-1 text-sm flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 opacity-60" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
                     {selectedPost.downloads}
                   </span>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action Buttons — glass style */}
                 <div className="flex flex-wrap gap-2">
                   <a
                     href="#"
-                    onClick={() =>
-                      handleDownload(selectedPost.zipUrl, selectedPost.id)
-                    }
-                    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-black text-white rounded-lg hover:bg-gray-800 transition-all"
+                    onClick={() => handleDownload(selectedPost.zipUrl, selectedPost.id)}
+                    className="glass-active inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-xl hover:scale-105 transition-transform"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
                     Download
@@ -391,7 +382,7 @@ const PopupModal = () => {
 
                   <button
                     onClick={handleCopy}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-base-200 hover:bg-base-300 rounded-lg transition-colors"
+                    className="glass-thin inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl hover:scale-105 transition-transform"
                   >
                     <FaRegCopy size={14} />
                     Copy Link
@@ -401,7 +392,7 @@ const PopupModal = () => {
                     url={`${siteUrl}/posts/${selectedPost.id}`}
                     title={selectedPost.title}
                   >
-                    <span className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-base-200 hover:bg-base-300 rounded-lg transition-colors">
+                    <span className="glass-thin inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl hover:scale-105 transition-transform">
                       <FaFacebook size={16} />
                       Share
                     </span>
@@ -409,10 +400,8 @@ const PopupModal = () => {
 
                   <button
                     onClick={changing ? () => {} : handleRatingChange}
-                    className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                      changing
-                        ? 'bg-base-200 opacity-50 cursor-not-allowed'
-                        : 'bg-base-200 hover:bg-red-100 hover:text-red-500'
+                    className={`glass-thin inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-transform ${
+                      changing ? 'opacity-40 cursor-not-allowed' : 'hover:scale-105'
                     }`}
                   >
                     <FaHeart size={14} />
@@ -429,7 +418,7 @@ const PopupModal = () => {
             {/* Next Button */}
             <button
               onClick={nextPost}
-              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white text-2xl flex items-center justify-center transition-colors z-50"
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 glass-thin w-10 h-10 rounded-full text-xl flex items-center justify-center hover:scale-110 transition-transform z-50"
             >
               &#8250;
             </button>
