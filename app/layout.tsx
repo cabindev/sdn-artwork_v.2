@@ -36,11 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <Navbar/>
-        <main className="flex-1">
+        <Navbar />
+        <main className="flex-2">
           {children}
         </main>
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );
