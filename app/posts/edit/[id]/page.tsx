@@ -11,9 +11,8 @@ const Edit = ({ params }: { params: { id: string } }) => {
   const [categoryId, setCategoryId] = useState('') 
   const [categories, setCategories] = useState([]) 
   const [image, setImage] = useState<File | null>(null)
-  const [zip, setZipFile] = useState<File | null>(null)
+  const [zipUrl, setZipUrl] = useState('')
   const [existingImage, setExistingImage] = useState<string | null>(null)
-  const [existingZip, setExistingZip] = useState<string | null>(null)
   const router = useRouter()
   const { id } = params
 
@@ -33,7 +32,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
       setContent(res.data.content)
       setCategoryId(res.data.categoryId || '')
       setExistingImage(res.data.imageUrl || null)
-      setExistingZip(res.data.zipUrl || null)
+      setZipUrl(res.data.zipUrl || '')
     } catch (error) {
       console.error(error)
     }
@@ -55,7 +54,7 @@ const Edit = ({ params }: { params: { id: string } }) => {
       formData.append('content', content)
       formData.append('categoryId', categoryId)
       if (image) formData.append('image', image)
-      if (zip) formData.append('zip', zip)
+      formData.append('zipUrl', zipUrl.trim())
 
       await axios.put(`/api/posts/${id}`, formData, {
         headers: {
@@ -149,22 +148,24 @@ const Edit = ({ params }: { params: { id: string } }) => {
         </div>
         <div>
           <label
-            htmlFor="zip"
+            htmlFor="zipUrl"
             className="block text-sm font-medium text-gray-700"
           >
-            ZIP
+            ลิงก์ดาวน์โหลดไฟล์
           </label>
           <input
-            type="file"
-            name="zip"
-            id="zip"
-            onChange={(e) => setZipFile(e.target.files?.[0] || null)}
+            type="url"
+            name="zipUrl"
+            id="zipUrl"
+            value={zipUrl}
+            onChange={(e) => setZipUrl(e.target.value)}
+            placeholder="https://.../file.zip"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {existingZip && (
+          {zipUrl && (
             <div className="mt-2">
-              <a href={existingZip} download className="text-indigo-600 hover:text-indigo-900">
-                Download Existing ZIP
+              <a href={zipUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-900">
+                เปิดลิงก์ปัจจุบัน
               </a>
             </div>
           )}

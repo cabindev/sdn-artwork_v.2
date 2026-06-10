@@ -24,10 +24,12 @@ export async function PUT(
   const content = formData.get('content') as string;
   const categoryId = formData.get('categoryId') as string | null;
   const image = formData.get('image') as File | null;
-  const zip = formData.get('zip') as File | null;
+  // zipUrl คือลิงก์ดาวน์โหลดภายนอก (เช่น NAS) แทนการอัปโหลดไฟล์เข้าระบบ
+  const zipInput = formData.get('zipUrl') as string | null;
 
   let imageUrl: string | undefined;
-  let zipUrl: string | undefined;
+  const zipUrl: string | undefined =
+    zipInput !== null ? zipInput.trim() : undefined;
 
   if (image) {
     const byteLength = await image.arrayBuffer();
@@ -42,28 +44,15 @@ export async function PUT(
     await writeFile(pathOfImage, bufferData);
   }
 
-  if (zip) {
-    const byteLength = await zip.arrayBuffer();
-    const bufferData = Buffer.from(byteLength);
-
-    const timestamp = new Date().getTime();
-    const fileExtension = path.extname(zip.name);
-    const fileName = `${timestamp}${fileExtension}`;
-    const pathOfZip = `./public/zip/${fileName}`;
-    zipUrl = `/zip/${fileName}`;
-
-    await writeFile(pathOfZip, bufferData);
-  }
-
   try {
     const post = await prisma.post.update({
       where: { id: Number(params.id) },
-      data: { 
-        title, 
-        content, 
+      data: {
+        title,
+        content,
         categoryId: categoryId ? parseInt(categoryId) : undefined,
         ...(imageUrl && { imageUrl }),
-        ...(zipUrl && { zipUrl }),
+        ...(zipUrl !== undefined && { zipUrl }),
       },
     });
 

@@ -12,8 +12,7 @@ const Create = () => {
   const [categories, setCategories] = useState([])
   const [image, setImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [zip, setZipFile] = useState<File | null>(null)
-  const [zipPreview, setZipPreview] = useState<string | null>(null)
+  const [zipUrl, setZipUrl] = useState('')
   const router = useRouter()
 
   const fetchCategories = async () => {
@@ -70,22 +69,6 @@ const Create = () => {
   };
   
   
-  const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      if (!file.name.endsWith('.zip')) {
-        alert("Only ZIP files are allowed");
-        return;
-      }
-      setZipFile(file);
-      setZipPreview(file.name);
-    } else {
-      setZipFile(null);
-      setZipPreview(null);
-    }
-  };
-  
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -95,7 +78,7 @@ const Create = () => {
       formData.append('content', content)
       formData.append('categoryId', categoryId)
       if (image) formData.append('image', image)
-      if (zip) formData.append('zip', zip)
+      if (zipUrl) formData.append('zipUrl', zipUrl.trim())
 
       await axios.post('/api/posts', formData, {
         headers: {
@@ -196,24 +179,24 @@ const Create = () => {
         </div>
         <div>
           <label
-            htmlFor="zip"
+            htmlFor="zipUrl"
             className="block text-sm font-medium text-gray-700"
           >
-            ZIP
+            ลิงก์ดาวน์โหลดไฟล์
           </label>
           <input
-            type="file"
-            name="zip"
-            id="zip"
-            onChange={handleZipChange}
+            type="url"
+            name="zipUrl"
+            id="zipUrl"
+            value={zipUrl}
+            onChange={(e) => setZipUrl(e.target.value)}
+            placeholder="https://.../file.zip"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             required
           />
-          {zipPreview && (
-            <div className="mt-4">
-              <p>Selected ZIP: {zipPreview}</p>
-            </div>
-          )}
+          <p className="mt-1 text-xs text-gray-500">
+            วางลิงก์ไฟล์สำหรับดาวน์โหลด แทนการอัปโหลดไฟล์ ZIP เข้าระบบ
+          </p>
         </div>
         <div>
           <button

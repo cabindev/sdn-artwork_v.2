@@ -63,10 +63,11 @@ export const POST = async (request: NextRequest) => {
   const content = formData.get('content') as string;
   const categoryId = formData.get('categoryId') as string | null;
   const image = formData.get('image') as File | null;
-  const zip = formData.get('zip') as File | null;
+  // zipUrl คือลิงก์ดาวน์โหลดภายนอก (เช่น NAS) แทนการอัปโหลดไฟล์เข้าระบบ
+  const zipInput = formData.get('zipUrl') as string | null;
 
   let imageUrl: string | null = null;
-  let zipUrl: string | null = null;
+  let zipUrl: string | null = zipInput?.trim() || null;
 
   if (image) {
     const byteLength = await image.arrayBuffer();
@@ -79,19 +80,6 @@ export const POST = async (request: NextRequest) => {
     imageUrl = `/images/${fileName}`; // URL สำหรับการเข้าถึงไฟล์
 
     await writeFile(pathOfImage, bufferData);
-  }
-
-  if (zip) {
-    const byteLength = await zip.arrayBuffer();
-    const bufferData = Buffer.from(byteLength);
-
-    const timestamp = new Date().getTime();
-    const fileExtension = path.extname(zip.name);
-    const fileName = `${timestamp}${fileExtension}`;
-    const pathOfZip = `./public/zip/${fileName}`;
-    zipUrl = `/zip/${fileName}`; // URL สำหรับการเข้าถึงไฟล์
-
-    await writeFile(pathOfZip, bufferData);
   }
 
   try {
