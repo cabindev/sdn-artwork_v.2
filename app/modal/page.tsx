@@ -33,6 +33,7 @@ interface Post {
 
 const PopupModal = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [topRated, setTopRated] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -45,10 +46,25 @@ const PopupModal = () => {
 
   const siteUrl = 'https://sdn-workspaces.sdnthailand.com';
 
+  // โหลดส่วนบน (Top Rated + categories) ครั้งเดียวตอน mount — ขึ้นก่อน ลื่น
   useEffect(() => {
     fetchCategories();
+    fetchTopRated();
+  }, []);
+
+  // โหลด grid ด้านล่างแยกต่างหาก ตามหน้า/หมวด/คำค้น
+  useEffect(() => {
     fetchPosts();
   }, [selectedCategory, search, currentPage]);
+
+  const fetchTopRated = async () => {
+    try {
+      const res = await axios.get<Post[]>('/api/stats');
+      setTopRated(res.data);
+    } catch (error) {
+      console.error('Failed to fetch top rated', error);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -65,7 +81,7 @@ const PopupModal = () => {
         category: selectedCategory,
         search,
         page: currentPage.toString(),
-        limit: '20',
+        limit: '50',
       }).toString();
       const res = await axios.get(`/api/posts?${query}`);
       setPosts(res.data.posts);
@@ -147,12 +163,15 @@ const PopupModal = () => {
         const updatedPost = await response.json();
         setSelectedPost(updatedPost);
 
-        // Update the rating in the Rated component
+        // Update the rating in the grid
         setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === updatedPost.id ? { ...post, ratings: updatedPost.ratings } : post
           )
         );
+
+        // รีเฟรช Top Rated ให้สะท้อนคะแนนใหม่
+        fetchTopRated();
 
         toast.success('Thank you for your rating!');
       }
@@ -164,12 +183,10 @@ const PopupModal = () => {
     }
   };
 
-  const topRatedPosts: Post[] = [...posts].sort((a, b) => b.ratings - a.ratings).slice(0, 5);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Toaster />
-      <Rated posts={topRatedPosts} />
+      <Rated posts={topRated} />
 
       {/* Search Bar — Liquid Glass */}
       <div className="mb-6">
