@@ -132,6 +132,149 @@ nav.glass {
 }
 
 /* ============================================
+   Form Controls — หน้า create / edit (เข้าชุด Liquid Glass)
+   ============================================ */
+.field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #2b2f36;
+  margin-bottom: 0.4rem;
+}
+[data-theme="dark"] .field-label { color: #e6e8ec; }
+
+.field-required { color: #f97316; margin-left: 0.15rem; }
+
+.field-hint {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #5b6068;
+}
+[data-theme="dark"] .field-hint { color: #9aa0aa; }
+
+.field-input {
+  width: 100%;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.9rem;
+  color: #2b2f36;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.field-input::placeholder { color: #9097a1; }
+.field-input:focus {
+  outline: none;
+  border-color: #f97316;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+[data-theme="dark"] .field-input {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e6e8ec;
+}
+[data-theme="dark"] .field-input::placeholder { color: #8b919b; }
+[data-theme="dark"] .field-input:focus {
+  border-color: #f97316;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+}
+
+/* Dropzone — สำหรับเลือกรูปตัวอย่าง */
+.field-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 132px;
+  cursor: pointer;
+  border: 1.5px dashed rgba(0, 0, 0, 0.18);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.4);
+  color: #5b6068;
+  padding: 1.25rem;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.field-dropzone:hover {
+  border-color: #f97316;
+  background: rgba(255, 255, 255, 0.65);
+  color: #2b2f36;
+}
+[data-theme="dark"] .field-dropzone {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: #9aa0aa;
+}
+[data-theme="dark"] .field-dropzone:hover {
+  border-color: #f97316;
+  color: #e6e8ec;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #f97316;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.625rem;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+.btn-primary:hover { background: #ea6a0c; }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: #2b2f36;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.btn-ghost:hover { background: rgba(0, 0, 0, 0.04); border-color: rgba(0, 0, 0, 0.2); }
+[data-theme="dark"] .btn-ghost { color: #e6e8ec; border-color: rgba(255, 255, 255, 0.16); }
+[data-theme="dark"] .btn-ghost:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.28); }
+
+/* Inline button spinner */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  animation: glass-spin 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-input, .field-dropzone, .btn-primary, .btn-ghost { transition: none; }
+  .btn-spinner { animation-duration: 1.4s; }
+}
+
+/* ============================================
    Masonry Layout
    ============================================ */
 .masonry-grid {

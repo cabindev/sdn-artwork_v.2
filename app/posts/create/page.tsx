@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import imageCompression from 'browser-image-compression'
 
 const Create = () => {
@@ -13,6 +14,8 @@ const Create = () => {
   const [image, setImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [zipUrl, setZipUrl] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const fetchCategories = async () => {
@@ -34,16 +37,16 @@ const Create = () => {
     if (file) {
       const fileName = file.name.toLowerCase();
       const allowedExtensions = ['.jpg', '.jpeg', '.webp', '.svg', '.png'];
-  
+
       const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
-  
+
       if (!isValidExtension) {
         alert("Only files with extensions .jpg, .jpeg, .webp, .svg, .png are allowed");
         // Clear the selected file
         fileInput.value = '';
         return;
       }
-  
+
       try {
         const options = {
           maxSizeMB: 0.5, // 500 KB
@@ -51,13 +54,13 @@ const Create = () => {
           useWebWorker: true,
         };
         const compressedFile = await imageCompression(file, options);
-  
+
         const reader = new FileReader();
         reader.onloadend = () => {
           setImagePreview(reader.result as string);
         };
         reader.readAsDataURL(compressedFile);
-  
+
         setImage(compressedFile);
       } catch (error) {
         console.error('Error compressing image', error);
@@ -67,10 +70,12 @@ const Create = () => {
       setImagePreview(null);
     }
   };
-  
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (submitting) return
+    setError(null)
+    setSubmitting(true)
 
     try {
       const formData = new FormData()
@@ -88,57 +93,63 @@ const Create = () => {
       router.push('./')
     } catch (error) {
       console.error(error)
+      setError('บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง')
+      setSubmitting(false)
     }
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-semibold mb-6">Create a New Post</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="mb-6">
+        <Link href="/" className="field-hint hover:underline" style={{ marginTop: 0 }}>
+          ← กลับหน้าหลัก
+        </Link>
+        <h1 className="text-2xl font-semibold tracking-tight mt-2">ลงงานอาร์ตเวิร์กใหม่</h1>
+        <p className="field-hint" style={{ marginTop: '0.25rem' }}>
+          กรอกรายละเอียดงาน แนบรูปตัวอย่าง และวางลิงก์ดาวน์โหลดไฟล์
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="glass-strong rounded-2xl p-6 sm:p-8 space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="title" className="field-label">
+              ชื่องาน<span className="field-required">*</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="เช่น โปสเตอร์รณรงค์งดเหล้าเข้าพรรษา"
+              className="field-input"
+            />
+          </div>
+          <div>
+            <label htmlFor="category" className="field-label">
+              หมวดหมู่
+            </label>
+            <select
+              id="category"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              className="field-input"
+            >
+              <option value="">เลือกหมวดหมู่</option>
+              {categories.map((category: any) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+
         <div>
-          <label
-            htmlFor="category"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Category
-          </label>
-          <select
-            id="category"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          >
-            <option value="">Select a category</option>
-            {categories.map((category: any) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Descriptions
+          <label htmlFor="content" className="field-label">
+            รายละเอียด<span className="field-required">*</span>
           </label>
           <textarea
             name="content"
@@ -147,42 +158,53 @@ const Create = () => {
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          ></textarea>
+            placeholder="อธิบายงาน วิธีใช้ หรือเงื่อนไขการนำไปใช้"
+            className="field-input resize-y"
+          />
         </div>
+
         <div>
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Image
+          <label htmlFor="image" className="field-label">
+            รูปตัวอย่าง<span className="field-required">*</span>
+          </label>
+          <label htmlFor="image" className="field-dropzone">
+            {imagePreview ? (
+              <>
+                <Image
+                  src={imagePreview}
+                  alt="ตัวอย่างรูป"
+                  width={180}
+                  height={180}
+                  className="rounded-lg object-contain max-h-44 w-auto"
+                />
+                <span className="field-hint" style={{ marginTop: 0 }}>คลิกเพื่อเปลี่ยนรูป</span>
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+                <span className="text-sm font-medium">คลิกเพื่อเลือกรูป</span>
+                <span className="field-hint" style={{ marginTop: 0 }}>
+                  .jpg .jpeg .png .webp .svg — ระบบบีบขนาดให้อัตโนมัติ
+                </span>
+              </>
+            )}
           </label>
           <input
             type="file"
             name="image"
             id="image"
+            accept=".jpg,.jpeg,.webp,.svg,.png"
             onChange={handleImageChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="hidden"
             required
           />
-          {imagePreview && (
-            <div className="mt-4">
-              <Image
-                src={imagePreview}
-                alt="Image Preview"
-                width={200}
-                height={200}
-                className="rounded-md"
-              />
-            </div>
-          )}
         </div>
+
         <div>
-          <label
-            htmlFor="zipUrl"
-            className="block text-sm font-medium text-gray-700"
-          >
-            ลิงก์ดาวน์โหลดไฟล์
+          <label htmlFor="zipUrl" className="field-label">
+            ลิงก์ดาวน์โหลดไฟล์<span className="field-required">*</span>
           </label>
           <input
             type="url"
@@ -191,19 +213,33 @@ const Create = () => {
             value={zipUrl}
             onChange={(e) => setZipUrl(e.target.value)}
             placeholder="https://.../file.zip"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="field-input"
             required
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="field-hint">
             วางลิงก์ไฟล์สำหรับดาวน์โหลด แทนการอัปโหลดไฟล์ ZIP เข้าระบบ
           </p>
         </div>
-        <div>
-          <button
-            type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Submit
+
+        {error && (
+          <p className="text-sm font-medium" style={{ color: '#dc2626' }}>
+            {error}
+          </p>
+        )}
+
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <Link href="/" className="btn-ghost">
+            ยกเลิก
+          </Link>
+          <button type="submit" disabled={submitting} className="btn-primary">
+            {submitting ? (
+              <>
+                <span className="btn-spinner" />
+                กำลังบันทึก...
+              </>
+            ) : (
+              'บันทึกงาน'
+            )}
           </button>
         </div>
       </form>
